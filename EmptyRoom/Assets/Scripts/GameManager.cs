@@ -13,12 +13,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private Bar sanityBar;
 
     // References to other objects
-    private GridManager gridManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private PlayerLigthManager playerLightManager;
 
-    
 
     public void Start() {
-        gridManager = FindObjectOfType<GridManager>();
         sanityBar.SetUp(maxSanity);
     }
 
@@ -36,6 +35,8 @@ public class GameManager : NonPersistentSingleton<GameManager>
                                         {0, 0, 0, 0, 0}};
 
         gridManager.UpdateGrid(gridArray);
+
+        playerLightManager.SetTargetRadius(1.5f);
     }
 
     void ReduceSanityOverTime() {
