@@ -37,15 +37,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
         
         // Generate world the world
         var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
-        gameWorld.generate_world(24);
+        gameWorld.generate_world();
+        
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
 
-        Debug.Log(worldStages[0].GetLength(0));
-        Debug.Log(worldStages[0].GetLength(1));
-        // foreach(Coordinates cor in gameWorld.rewards) {
-        //     Debug.Log(cor.x + "," + cor.y);
-        // }
         gridManager.GenerateGrid(worldStages[0]);
         gridManager.AddPlaceableObjects(ballsList);
     }
