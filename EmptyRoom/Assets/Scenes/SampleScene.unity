@@ -877,11 +877,12 @@ MonoBehaviour:
   radiusLerp: 0.1
   lightRadiusLevels:
   - 50
-  - 8
   - 5
   - 4
+  - 3.5
   - 3.2
+  - 2.9
+  - 2.7
   - 2.5
-  - 2.1
-  - 1.8
-  - 1.5
+  - 2.3
+  - 2.3
