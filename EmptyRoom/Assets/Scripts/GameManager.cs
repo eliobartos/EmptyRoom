@@ -34,9 +34,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     public void Start() {
         sanityBar.SetUp(maxSanity);
-        
+
         // Generate world the world
-        var gameWorld = new GameWorld(levelWidth, levelWidth, maxBallsOnLevel, 1.0, 0.64, maxBallsOnLevel);
+        var gameWorld = new GameWorld(levelWidth, levelWidth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
         gameWorld.generate_world(24);
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
@@ -89,6 +89,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
                 row += array[i, j];
             }
             Debug.Log("Row (" + i + ") " + row);
-        } 
+        }
     }
 }
