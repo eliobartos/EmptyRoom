@@ -25,6 +25,11 @@ class Coordinates {
     }
 }
 
+/// <summary> Class for generating a single game world.
+/// To generate a world, first set parameters in the constructor and then call <generate function cref="generate_world">.
+/// You can then acces <stages of the world cref="stages"> (0 - no cells removed, 1 - some cells removed etc.) and the <list of reward positions cref="rewards">.
+/// Other stuff should not be relevant for now, documentation will follow
+///</summary>
 class GameWorld {
     public  const int CELL_MARK_PASSABLE = 0;
     public const int CELL_MARK_OCCUPIED = 1;
