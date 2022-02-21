@@ -5,22 +5,29 @@ using UnityEngine;
 public class GameManager : NonPersistentSingleton<GameManager>
 {
 
-    // Prefabs
-    [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private GameObject _ballPrefab;
-
     // Game Manager Variables
+    [Tooltip("Level Generating Variables")]
+    public int levelWidth = 25;
+    public int levelHeigth = 25;
     public int maxBallsOnLevel = 9;
+
+    // Player Variables
+    [Tooltip("Player Variables")]
     public int ballsCollected = 0;
     public float currentSanity = 100.0f;
     public float maxSanity = 100.0f;
 
     // UI Objects
+    [Tooltip("References to Objects")]
     [SerializeField] private Bar sanityBar;
 
     // References to other objects
     [SerializeField] private GridManager gridManager;
     [SerializeField] private PlayerLigthManager playerLightManager;
+
+    // Prefabs
+    [Tooltip("Prefabs")]
+    [SerializeField] private GameObject _ballPrefab;
 
     List<int[,]> worldStages;
     List<Coordinates> ballsList;
@@ -29,8 +36,8 @@ public class GameManager : NonPersistentSingleton<GameManager>
         sanityBar.SetUp(maxSanity);
         
         // Generate world the world
-        var gameWorld = new GameWorld();
-        gameWorld.generate_world(0);
+        var gameWorld = new GameWorld(levelWidth, levelWidth, maxBallsOnLevel, 1.0, 0.64, maxBallsOnLevel);
+        gameWorld.generate_world(24);
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
 
@@ -50,9 +57,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public void BallCollected() {
         ballsCollected += 1;
 
+        // Update the world
         gridManager.UpdateGrid(worldStages[ballsCollected]);
 
-        playerLightManager.SetTargetRadius(1.5f);
+        // Reduce player light
+        playerLightManager.SetTargetRadius(ballsCollected);
     }
 
     void ReduceSanityOverTime() {

@@ -297,7 +297,6 @@ MonoBehaviour:
   _width: 0
   _height: 0
   _tilePrefab: {fileID: 4457547144873855493, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
-  _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
 --- !u!4 &488991484
 Transform:
   m_ObjectHideFlags: 0
@@ -341,14 +340,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa56104d59fd4d3f8bcd78e3f80123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePrefab: {fileID: 4457547144873855493, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
-  _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
+  levelWidth: 25
+  levelHeigth: 25
+  maxBallsOnLevel: 9
   ballsCollected: 0
   currentSanity: 100
   maxSanity: 100
   sanityBar: {fileID: 1346455450}
   gridManager: {fileID: 488991483}
   playerLightManager: {fileID: 1838255097}
+  _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
 --- !u!4 &491950648
 Transform:
   m_ObjectHideFlags: 0
@@ -580,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.35
+  m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
@@ -870,6 +871,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9cebe9cc023940639e8a3b2dcea310d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  innerRadiusPercentage: 0.2
+  innerRadiusPercentage: 0.08
   targetRadius: 50
   radiusLerp: 0.1
+  lightRadiusLevels:
+  - 50
+  - 8
+  - 5
+  - 4
+  - 3.2
+  - 2.5
+  - 2.1
+  - 1.8
+  - 1.5

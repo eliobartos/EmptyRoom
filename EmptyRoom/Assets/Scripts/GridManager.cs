@@ -8,7 +8,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _width, _height;
 
     [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private GameObject _ballPrefab;
 
     private Dictionary<Vector2, Tile> _tiles;
 
