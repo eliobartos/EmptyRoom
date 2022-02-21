@@ -16,14 +16,7 @@ public class PlaceableObject
     public PlaceableObjectType type;
     public string name;
 
-    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y) {
-        
-        position = new Vector3(x, y, 0);
-        prefab = _prefab;
-        rotation = Quaternion.identity;
-        type = _type;
-        name = _name + $" x={x}, y={y}";
-    }
+    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y) : this(_prefab, _type, _name, x, y, 0, 0) {}
 
     public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y, float offsetX, float offsetY) {
         

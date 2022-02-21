@@ -36,7 +36,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         sanityBar.SetUp(maxSanity);
         
         // Generate world the world
-        var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, 1.0, 0.64, maxBallsOnLevel);
+        var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
         gameWorld.generate_world(24);
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);

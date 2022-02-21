@@ -12,27 +12,6 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<Vector2, Tile> _tiles;
 
-    private int _ballsCollected = 0;
-
-    void Start() {
-
-        _ballsCollected = 0;
-
-        // int[,] gridArray = new int[,] {{0, 0, 0, 0, 0},
-        //                                {0, 0, 0, 0, 0},
-        //                                {0, 0, 0, 0, 0}};
-
-      
-        // GenerateGrid(gridArray);
-      
-        // List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
-        // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 0));
-        // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 4));
-
-        // AddPlaceableObjects(placeableObjects);
-
-    }
-
     public void GenerateGrid(int[,] gridArray) {
 
         _width = gridArray.GetLength(0);
