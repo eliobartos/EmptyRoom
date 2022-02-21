@@ -21,9 +21,9 @@ public class GridManager : MonoBehaviour
         //                                {0, 0, 0, 0, 0},
         //                                {0, 0, 0, 0, 0}};
 
-      
+
         // GenerateGrid(gridArray);
-      
+
         // List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
         // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 0));
         // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 4));
@@ -34,21 +34,21 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid(int[,] gridArray) {
 
-        _height = gridArray.GetLength(0);
-        _width = gridArray.GetLength(1);
+        _width = gridArray.GetLength(0);
+        _height = gridArray.GetLength(1);
 
         _tiles = new Dictionary<Vector2, Tile>();
 
         // Generate all tiles
         for (int y = _height-1; y >= 0; y--) {
             for (int x = 0; x < _width; x++) {
-                
+
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
 
                 // Set tile properties
                 spawnedTile.name = $"Tile y={y}, x={x}";
 
-                switch (gridArray[y, x]) {
+                switch (gridArray[x, y]) {
                     case 0:
                         spawnedTile.SetType(TileTypes.Normal);
                         break;
@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviour
                 }
 
                 // Save tile to dict
-                _tiles[new Vector2(y, x)] = spawnedTile;
+                _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
     }
@@ -75,15 +75,15 @@ public class GridManager : MonoBehaviour
     // Updates previously created grid (tiles only)
     public void UpdateGrid(int[,] gridArray) {
 
-        _height = gridArray.GetLength(0);
-        _width = gridArray.GetLength(1);
+        _width = gridArray.GetLength(0);
+        _height = gridArray.GetLength(1);
 
         for (int y = 0; y < _height; y++) {
             for (int x = 0; x < _width; x++) {
 
-                Tile tile = GetTile(new Vector2(_height-1 - y, x));
+                Tile tile = GetTile(new Vector2(x, y));
 
-                switch (gridArray[y, x]) {
+                switch (gridArray[x, y]) {
                     case 0:
                         if(tile.tileType != TileTypes.Normal)
                             tile.SetType(TileTypes.Normal);
