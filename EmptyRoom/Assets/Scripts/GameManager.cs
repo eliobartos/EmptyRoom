@@ -19,6 +19,10 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     public void Start() {
         sanityBar.SetUp(maxSanity);
+        var game_world = new GameWorld();
+        game_world.generate_world();
+        List<int[,]> stages = game_world.stages;
+        List<Coordinates> rewards = game_world.rewards;
     }
 
     void Update() {
