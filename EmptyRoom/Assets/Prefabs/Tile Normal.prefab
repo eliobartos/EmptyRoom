@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 4457547144873855495}
   - component: {fileID: 4457547144873855494}
   - component: {fileID: 4457547144873855493}
-  - component: {fileID: -1259676889239144557}
-  - component: {fileID: 5778292162750570046}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: Tile Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4457547144873855492}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3698068, y: -1.1715446, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 946640361
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38f8a8b98bb9542ccabf620e5f34ed55, type: 3}
   m_Color: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,51 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   _wallColor: {r: 0, g: 0, b: 0, a: 1}
+  _baseSprite: {fileID: 21300000, guid: 38f8a8b98bb9542ccabf620e5f34ed55, type: 3}
+  _wallSprite: {fileID: 21300000, guid: d5f70d92bc65d450abdc81e150f8863a, type: 3}
   tileType: 0
---- !u!61 &-1259676889239144557
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4457547144873855492}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!50 &5778292162750570046
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4457547144873855492}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
