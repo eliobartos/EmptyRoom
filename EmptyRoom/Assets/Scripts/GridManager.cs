@@ -35,23 +35,25 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid(int[,] gridArray) {
 
-        _height = gridArray.GetLength(0);
-        _width = gridArray.GetLength(1);
+        _width = gridArray.GetLength(0);
+        _height = gridArray.GetLength(1);
 
         _tiles = new Dictionary<Vector2, Tile>();
 
         // Generate all tiles
-        for (int y = _height-1; y >= 0; y--) {
-            for (int x = 0; x < _width; x++) {
-                
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+
                 var spawnedTile = Instantiate(_tileNormalPrefab, new Vector3(x, y), Quaternion.identity);
 
                 // Set tile properties
-                spawnedTile.name = $"Tile y={y}, x={x}";
+                spawnedTile.name = $"Tile x={x}, y={y}";
                 spawnedTile.Init(TileTypes.Normal);
 
                 // Save tile to dict
-                _tiles[new Vector2(y, x)] = spawnedTile;
+                _tiles[new Vector2(x, y)] = spawnedTile;
             }
         }
     }
@@ -68,22 +70,22 @@ public class GridManager : MonoBehaviour
     // Updates previously created grid (tiles only)
     public void UpdateGrid(int[,] gridArray) {
 
-        _height = gridArray.GetLength(0);
-        _width = gridArray.GetLength(1);
+        _width = gridArray.GetLength(0);
+        _height = gridArray.GetLength(1);
 
-        for (int y = 0; y < _height; y++) {
-            for (int x = 0; x < _width; x++) {
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
 
-                Tile tile = GetTile(new Vector2(_height-1 - y, x));
+                Tile tile = GetTile(new Vector2(x, y));
 
-                switch (gridArray[y, x]) {
+                switch (gridArray[x, y]) {
                     case 0:
                         if(tile.type != TileTypes.Normal)
-                            SwapTiles(tile, _tileNormalPrefab, TileTypes.Normal, _height - 1 - y, x);
+                            SwapTiles(tile, _tileNormalPrefab, TileTypes.Normal, x, y);
                         break;
                     case 1:
                         if(tile.type != TileTypes.Wall)
-                            SwapTiles(tile, _tileWallPrefab, TileTypes.Wall, _height - 1 - y, x);    
+                            SwapTiles(tile, _tileWallPrefab, TileTypes.Wall, x, y);    
                         break;
                 }
             }
@@ -91,15 +93,15 @@ public class GridManager : MonoBehaviour
     }
 
     // Destroy the current tile and place a new one instead
-    public void SwapTiles(Tile currentTile, Tile newTilePrefab,TileTypes newTileType, int y, int x) {
+    public void SwapTiles(Tile currentTile, Tile newTilePrefab,TileTypes newTileType, int x, int y) {
         
         Destroy(currentTile.gameObject);
         
         var newTile = Instantiate(newTilePrefab, new Vector3(x, y, 0), Quaternion.identity);
-        newTile.name = $"Tile y={y}, x={x}";
+        newTile.name = $"Tile x={x}, y={y}";
         newTile.Init(newTileType);
         
-        _tiles[new Vector2(y, x)] = newTile;
+        _tiles[new Vector2(x, y)] = newTile;
     }
 
     // Updated the grid based on list of changes in term of coordinates and tile types

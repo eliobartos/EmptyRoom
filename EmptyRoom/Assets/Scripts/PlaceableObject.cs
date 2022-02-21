@@ -16,21 +16,21 @@ public class PlaceableObject
     public PlaceableObjectType type;
     public string name;
 
-    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int row, int column) {
+    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y) {
         
-        position = new Vector3(column, row, 0);
+        position = new Vector3(x, y, 0);
         prefab = _prefab;
         rotation = Quaternion.identity;
         type = _type;
-        name = _name + $" y={row}, x={column}";
+        name = _name + $" x={x}, y={y}";
     }
 
-    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int row, int column, float offsetX, float offsetY) {
+    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y, float offsetX, float offsetY) {
         
-        position = new Vector3(column + offsetX, row + offsetY, 0);
+        position = new Vector3(x + offsetX, y + offsetY, 0);
         prefab = _prefab;
         rotation = Quaternion.identity;
         type = _type;
-        name = _name + $" y={row}, x={column}";
+        name = _name + $" x={x}, y={y}";
     }
 }

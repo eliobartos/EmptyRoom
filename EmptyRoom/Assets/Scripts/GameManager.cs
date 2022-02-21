@@ -8,7 +8,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     // Game Manager Variables
     [Tooltip("Level Generating Variables")]
     public int levelWidth = 25;
-    public int levelHeigth = 25;
+    public int levelHeigth = 5;
     public int maxBallsOnLevel = 9;
 
     // Player Variables
@@ -36,11 +36,13 @@ public class GameManager : NonPersistentSingleton<GameManager>
         sanityBar.SetUp(maxSanity);
         
         // Generate world the world
-        var gameWorld = new GameWorld(levelWidth, levelWidth, maxBallsOnLevel, 1.0, 0.64, maxBallsOnLevel);
+        var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, 1.0, 0.64, maxBallsOnLevel);
         gameWorld.generate_world(24);
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
 
+        Debug.Log(worldStages[0].GetLength(0));
+        Debug.Log(worldStages[0].GetLength(1));
         // foreach(Coordinates cor in gameWorld.rewards) {
         //     Debug.Log(cor.x + "," + cor.y);
         // }
@@ -74,7 +76,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         List<PlaceableObject> plObjList = new List<PlaceableObject>();
 
         foreach(Coordinates cor in corList) {
-            PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.y, cor.x);
+            PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.x, cor.y);
             plObjList.Add(plObj);
         }
 
