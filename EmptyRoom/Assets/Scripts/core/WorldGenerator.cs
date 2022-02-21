@@ -136,8 +136,9 @@ class GameWorld {
 
     private void _generate_stages() {
         stages = new List<int[,]>();
-        double threshold_step = (final_percolation_prob - starting_percolation_prob) / (percolation_steps - 1);
-        for (double threshold = starting_percolation_prob; threshold > final_percolation_prob; threshold += threshold_step) {
+        double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
+        for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
+            double threshold = starting_percolation_prob + step_nr * threshold_step;
             var stage = new int[width, height];
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
@@ -182,8 +183,8 @@ class GameWorld {
         rewards = best_rewards;
     }
 
-    public void generate_world(Int32 seed=0) {
-        var rand_gen = new Random(seed);
+    public void generate_world(Int32? seed=null) {
+        var rand_gen = (seed.HasValue) ? new Random(seed.Value) : new Random();
         _generate_matrix(rand_gen);
         _generate_stages();
         _generate_rewards(nr_rewards, rand_gen);
