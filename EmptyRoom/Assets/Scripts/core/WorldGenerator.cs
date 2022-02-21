@@ -183,8 +183,8 @@ class GameWorld {
         rewards = best_rewards;
     }
 
-    public void generate_world(Int32 seed=0) {
-        var rand_gen = new Random(seed);
+    public void generate_world(Int32? seed=null) {
+        var rand_gen = (seed.HasValue) ? new Random(seed.Value) : new Random();
         _generate_matrix(rand_gen);
         _generate_stages();
         _generate_rewards(nr_rewards, rand_gen);
