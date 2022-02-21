@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NonPersistentSingleton<GameManager>
 {
@@ -49,17 +50,27 @@ public class GameManager : NonPersistentSingleton<GameManager>
     void Update() {
         ReduceSanityOverTime();
         sanityBar.UpdateBar(currentSanity);
+
+        if(currentSanity <= 0.0f) {
+            LevelLost();
+        }
     }
 
     // Called by BallBehaviour when the ball is collected
     public void BallCollected() {
         ballsCollected += 1;
 
+        if(ballsCollected == maxBallsOnLevel) {
+            LevelWon();
+        }
+
         // Update the world
         gridManager.UpdateGrid(worldStages[ballsCollected]);
 
         // Reduce player light
         playerLightManager.SetTargetRadius(ballsCollected);
+
+        
     }
 
     void ReduceSanityOverTime() {
@@ -77,6 +88,14 @@ public class GameManager : NonPersistentSingleton<GameManager>
         }
 
         return plObjList;
+    }
+
+    void LevelWon() {
+        SceneManager.LoadScene("GameScene");
+    }
+
+    void LevelLost() {
+        SceneManager.LoadScene("GameScene");
     }
 
     // Debug function to plot the matrics
