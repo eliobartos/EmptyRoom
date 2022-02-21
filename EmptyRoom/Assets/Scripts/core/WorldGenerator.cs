@@ -136,8 +136,9 @@ class GameWorld {
 
     private void _generate_stages() {
         stages = new List<int[,]>();
-        double threshold_step = (final_percolation_prob - starting_percolation_prob) / (percolation_steps - 1);
-        for (double threshold = starting_percolation_prob; threshold > final_percolation_prob; threshold += threshold_step) {
+        double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
+        for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
+            double threshold = starting_percolation_prob + step_nr * threshold_step;
             var stage = new int[width, height];
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
