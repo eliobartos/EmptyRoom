@@ -18,22 +18,22 @@ public class GridManager : MonoBehaviour
 
         _ballsCollected = 0;
 
-        int[,] gridArray = new int[,] {{0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0},
-                                       {0, 0, 0, 0, 0}};
+        // int[,] gridArray = new int[,] {{0, 0, 0, 0, 0},
+        //                                {0, 0, 0, 0, 0},
+        //                                {0, 0, 0, 0, 0}};
 
       
-        GenerateGrid(gridArray);
+        // GenerateGrid(gridArray);
       
-        List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
-        placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 0));
-        placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 4));
+        // List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
+        // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 0));
+        // placeableObjects.Add(new PlaceableObject(_ballPrefab, PlaceableObjectType.Ball, 2, 4));
 
-        AddPlaceableObjects(placeableObjects);
+        // AddPlaceableObjects(placeableObjects);
 
     }
 
-    void GenerateGrid(int[,] gridArray) {
+    public void GenerateGrid(int[,] gridArray) {
 
         _height = gridArray.GetLength(0);
         _width = gridArray.GetLength(1);
@@ -108,9 +108,11 @@ public class GridManager : MonoBehaviour
 
     // Adds all placeable objects on the screen
     public void AddPlaceableObjects(List<PlaceableObject> placeableObjects) {
-        
+
         foreach(PlaceableObject placeableObject in placeableObjects) {
-            Instantiate(placeableObject.prefab, placeableObject.position, placeableObject.rotation);
+            var plObj = Instantiate(placeableObject.prefab, placeableObject.position, placeableObject.rotation);
+            plObj.name = placeableObject.name;
+            Debug.Log(plObj.name);
         }
     }
 }
