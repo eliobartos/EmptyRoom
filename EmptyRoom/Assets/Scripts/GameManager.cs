@@ -33,6 +33,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GridManager gridManager;
     [SerializeField] private PlayerLigthManager playerLightManager;
     [SerializeField] private Transform playerTransform;
+    [SerializeField] private PlayerMovement playerMovement;
 
     // Prefabs
     [Header("Prefabs")]
@@ -158,6 +159,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     void LevelLost() {
         SceneManager.LoadScene("GameScene");
+    }
+
+    // Used by Camera Behaviour to call this after zoom in animation finishes
+    public void SetCanPlayerMove(bool _canMove) {
+        playerMovement.canMove = _canMove;
     }
 
     // Debug function to plot the matrics

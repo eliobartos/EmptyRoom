@@ -356,6 +356,7 @@ MonoBehaviour:
   gridManager: {fileID: 488991483}
   playerLightManager: {fileID: 1838255097}
   playerTransform: {fileID: 1838255093}
+  playerMovement: {fileID: 1838255094}
   _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
   _arrowPrefab: {fileID: 7069783252629890430, guid: bd6d230c478274d58a6a732622193251, type: 3}
 --- !u!4 &491950648
@@ -969,6 +970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sanityPctForPlayerSpriteChange: 0.2
   movementSpeed: 4
+  canMove: 0
 --- !u!50 &1838255095
 Rigidbody2D:
   serializedVersion: 4

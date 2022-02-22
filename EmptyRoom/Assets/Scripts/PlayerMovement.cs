@@ -7,10 +7,14 @@ public class PlayerMovement : MonoBehaviour
 
     public float sanityPctForPlayerSpriteChange = 0.2f;
     public float movementSpeed = 0.01f;
+    public bool canMove = false;
     Animator animator;
 
     int levelWidth;
     int levelHeight;
+
+    float inputX;
+    float inputY;
 
     public void Start() {
         animator = GetComponent<Animator>();
@@ -22,8 +26,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float inputX = Input.GetAxisRaw("Horizontal");
-        float inputY = Input.GetAxisRaw("Vertical");
+        if(canMove) {
+            inputX = Input.GetAxisRaw("Horizontal");
+            inputY = Input.GetAxisRaw("Vertical");
+        } else {
+            inputX = 0.0f;
+            inputY = 0.0f;
+        }
+        
 
         MoveThePlayer(inputX, inputY);
         HandleAnimations(inputX, inputY);

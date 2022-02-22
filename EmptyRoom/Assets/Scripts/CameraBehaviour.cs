@@ -45,5 +45,7 @@ public class CameraBehaviour : MonoBehaviour
             Camera.main.orthographicSize -= 0.1f;
             yield return new WaitForFixedUpdate();
         }
+        
+        GameManager.instance.SetCanPlayerMove(true);
     }
 }
