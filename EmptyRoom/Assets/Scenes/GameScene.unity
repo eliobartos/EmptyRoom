@@ -342,10 +342,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa56104d59fd4d3f8bcd78e3f80123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelWidth: 25
-  levelHeigth: 25
+  levelWidth: 50
+  levelHeigth: 50
   maxBallsOnLevel: 9
   arrowsPerLevel: 00000000000000000000000000000000000000000100000002000000040000000500000005000000
+  minArrowDistanceToPlayer: 5
+  maxArrowDistanceToPlayer: 10
   ballsCollected: 0
   currentSanity: 100
   maxSanity: 100

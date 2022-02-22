@@ -12,6 +12,8 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int levelHeigth = 5;
     public int maxBallsOnLevel = 9;
     public int[] arrowsPerLevel;
+    public int minArrowDistanceToPlayer = 5;
+    public int maxArrowDistanceToPlayer = 10;
 
     // Player Variables
     [Header("Player Variables")]
@@ -92,7 +94,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         for (int i = 0; i < n; i++) {
             // Call Game World Utils
             IntCoordinates playerPosition = new IntCoordinates(Mathf.RoundToInt(playerTransform.position.x), Mathf.RoundToInt(playerTransform.position.y));
-            ArrowData nextArrow = GameWorldUtils.generate_arrow(worldStages[ballsCollected], playerPosition, GameObjectsToIntCoordinates(balls));
+            ArrowData nextArrow = GameWorldUtils.generate_arrow(worldStages[ballsCollected], playerPosition, GameObjectsToIntCoordinates(balls), minArrowDistanceToPlayer, maxArrowDistanceToPlayer);
 
             // Convert coordinates to real object
             PlaceableObject ArrowObject = new PlaceableObject(_arrowPrefab, PlaceableObjectType.Arrow, $"Arrow {i}", nextArrow.origin.x, nextArrow.origin.y, Quaternion.FromToRotation(Vector3.left, new Vector3(nextArrow.direction.x, nextArrow.direction.y, 0)));
