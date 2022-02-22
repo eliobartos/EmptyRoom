@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GameManager : NonPersistentSingleton<GameManager>
 {
@@ -34,6 +35,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private PlayerLigthManager playerLightManager;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Light2D globalLight;
 
     // Prefabs
     [Header("Prefabs")]
@@ -81,6 +83,10 @@ public class GameManager : NonPersistentSingleton<GameManager>
         if(ballsCollected == maxBallsOnLevel) {
             LevelWon();
             return;
+        }
+
+        if(ballsCollected == 1) {
+            globalLight.gameObject.SetActive(false);
         }
 
         // Update the world
