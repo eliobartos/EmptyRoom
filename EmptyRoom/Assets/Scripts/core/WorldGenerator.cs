@@ -2,28 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-class Coordinates {
+class IntCoordinates {
     public int x;
     public int y;
 
-    public Coordinates(int x, int y) {
+    public IntCoordinates(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public List<Coordinates> neighbors(int width, int height) {
-        var neighbors = new List<Coordinates>();
+    public List<IntCoordinates> neighbors(int width, int height) {
+        var neighbors = new List<IntCoordinates>();
         foreach (int delta in new List<int>() {-1, 1}) {
-            neighbors.Add(new Coordinates(x + delta, y));
-            neighbors.Add(new Coordinates(x, y + delta));
+            neighbors.Add(new IntCoordinates(x + delta, y));
+            neighbors.Add(new IntCoordinates(x, y + delta));
         }
         return neighbors.Where(coord => (coord.x >= 0) & (coord.x < width) & (coord.y >= 0) & (coord.y < height)).ToList();
     }
 
-    public int distance_to_other(Coordinates other) {
+    public int distance_to_other(IntCoordinates other) {
         return Math.Abs(x - other.x) + Math.Abs(y - other.y);
     }
 }
+
 
 /// <summary> Class for generating a single game world.
 /// To generate a world, first set parameters in the constructor and then call <generate function cref="generate_world">.
@@ -49,7 +50,7 @@ class GameWorld {
     public double[,] score_matrix;
     public List<int[,]> stages;
 
-    public List<Coordinates> rewards;
+    public List<IntCoordinates> rewards;
     public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_precolation_prob=0.64, int percolation_steps=5) {
         this.width = width;
         this.height = height;
@@ -67,12 +68,12 @@ class GameWorld {
         }
     }
 
-    private int _mark_cluster_and_return_size(int[,] matrix, Coordinates start, int mark) {
+    private int _mark_cluster_and_return_size(int[,] matrix, IntCoordinates start, int mark) {
         if (matrix[start.x, start.y] == CELL_MARK_OCCUPIED) {
             return 0;
         }
         var cluster_size = 1;
-        var to_visit = new Queue<Coordinates>();
+        var to_visit = new Queue<IntCoordinates>();
         to_visit.Enqueue(start);
         matrix[start.x, start.y] = mark;
         while (to_visit.Count > 0) {
@@ -101,11 +102,11 @@ class GameWorld {
         return count;
     }
 
-    private Coordinates _find_one(int[,] matrix, int mark) {
+    private IntCoordinates _find_one(int[,] matrix, int mark) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (matrix[x, y] == mark) {
-                    return new Coordinates(x, y);
+                    return new IntCoordinates(x, y);
                 }
             }
         }
@@ -118,7 +119,7 @@ class GameWorld {
         int largest_cluster_mark = CELL_MARK_PLACEHOLDER;
         int nr_passable_cells = _count_marks(matrix, CELL_MARK_PASSABLE);
         while (largest_cluster_size  < nr_passable_cells - total_cluster_size) {
-            Coordinates start = _find_one(matrix, CELL_MARK_PASSABLE);
+            IntCoordinates start = _find_one(matrix, CELL_MARK_PASSABLE);
             var cluster_size = _mark_cluster_and_return_size(matrix, start, cluster_mark);
             total_cluster_size += cluster_size;
             if (cluster_size > largest_cluster_size) {
@@ -150,7 +151,7 @@ class GameWorld {
         }
     }
 
-    public double compute_separation(List<Coordinates> rewards){
+    public double compute_separation(List<IntCoordinates> rewards){
         double total = 0;
         for (int first = 0; first < rewards.Count; first++) {
             for (int second = first + 1; second < rewards.Count; second++) {
@@ -161,17 +162,10 @@ class GameWorld {
     }
 
     public void _generate_rewards(int nr_rewards, Random rand_generator, int nr_retries=10) {
-        var free_cells = new List<Coordinates>();
-        var final_stage = stages.Last();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (final_stage[x, y] == CELL_MARK_PASSABLE) {
-                    free_cells.Add(new Coordinates(x, y));
-                }
-            }
-        }
+        var free_cells = GameWorldUtils.get_passable_cells_as_list(stages.Last());
+
         double best_separation = 0;
-        List<Coordinates> best_rewards = null;
+        List<IntCoordinates> best_rewards = null;
         for (int retry = 0; retry < nr_retries; retry++) {
             var _random_rewards = free_cells.OrderBy(cell => rand_generator.Next()).Take(nr_rewards).ToList();
             var separation = compute_separation(_random_rewards);
@@ -227,5 +221,85 @@ class GameWorld {
         for (int x=0; x<width + 2; x++) {
             Console.Write("-");
         }
+    }
+}
+
+class Vector2Substitute{
+    public float x;
+    public float y;
+
+    public Vector2Substitute(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector2Substitute(IntCoordinates coodrinates) : this((float) coodrinates.x, (float) coodrinates.y) {}
+
+    public float magnitude() {
+        return (float) Math.Sqrt(x*x + y*y);
+    }
+
+    public void normalize() {
+        var m = magnitude();
+        x /= m;
+        y /= m;
+    }
+}
+
+class ArrowData {
+    public IntCoordinates origin;
+    public Vector2Substitute direction;
+
+    public ArrowData(IntCoordinates origin, Vector2Substitute direction) {
+        this.origin = origin;
+        this.direction = direction;
+    }
+
+    // public static ArrowData create_arrow(IntCoordinates origin, IntCoordinates target) {
+    //     var direction = new Vector2Substitute(target.x - origin.x, target.y - origin.y);
+    //     direction.normalize();
+    //     return new ArrowData(new Vector2Substitute(origin), direction);
+    // }
+}
+
+class GameWorldUtils {
+
+    public static List<IntCoordinates> get_passable_cells_as_list(int[,] world_stage) {
+        var width = world_stage.GetLength(0);
+        var height = world_stage.GetLength(1);
+
+        var free_cells = new List<IntCoordinates>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (world_stage[x, y] == GameWorld.CELL_MARK_PASSABLE) {
+                    free_cells.Add(new IntCoordinates(x, y));
+                }
+            }
+        }
+        return free_cells;
+    }
+
+    public static ArrowData generate_arrow(int[, ] world_stage, IntCoordinates player_position, List<IntCoordinates> targets, float min_distance_to_player=1,float max_distance_to_player=7, Int32? seed = null, int nr_retries=20){
+        Random rand_gen;
+        if (seed.HasValue) {
+            rand_gen = new Random(seed.Value);
+        } else {
+            rand_gen = new Random();
+        }
+
+        var random_target = new Vector2Substitute(targets[rand_gen.Next() % targets.Count]);
+
+        var passable_cells = get_passable_cells_as_list(world_stage);
+        for (int retry = 0; retry < nr_retries; retry++) {
+            var origin = passable_cells[rand_gen.Next() % passable_cells.Count];
+            var distance_to_player = (new Vector2Substitute(player_position.x - origin.x, player_position.y - origin.y)).magnitude();
+            var is_good_choice = ((distance_to_player > min_distance_to_player) & (distance_to_player < max_distance_to_player));
+            if  (is_good_choice || retry == nr_retries - 1) {
+                var direction = new Vector2Substitute(random_target.x - origin.x, random_target.y - origin.y);
+                direction.normalize();
+                return new ArrowData(origin, direction);
+            }
+        }
+        return null;
     }
 }
