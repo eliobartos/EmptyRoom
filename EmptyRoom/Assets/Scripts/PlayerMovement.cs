@@ -14,9 +14,7 @@ public class PlayerMovement : MonoBehaviour
         float inputY = Input.GetAxisRaw("Vertical");
 
         Vector2 moveVector = new Vector2(inputX, inputY);
-        Debug.Log(moveVector);
         moveVector = moveVector.normalized;
-        Debug.Log("Normalized: " + moveVector);
 
         Vector3 pos = this.transform.position;
         pos.x = pos.x + moveVector.x * movementSpeed * Time.deltaTime;

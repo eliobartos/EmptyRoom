@@ -11,6 +11,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tileWallPrefab;
 
     private Dictionary<Vector2, Tile> _tiles;
+    private List<BallBehaviour> _balls;
+
 
     public void GenerateGrid(int[,] gridArray) {
 
@@ -91,12 +93,17 @@ public class GridManager : MonoBehaviour
     }
 
     // Adds all placeable objects on the screen
-    public void AddPlaceableObjects(List<PlaceableObject> placeableObjects) {
+    public List<GameObject> AddPlaceableObjects(List<PlaceableObject> placeableObjects) {
+
+        List<GameObject> createdObjects = new List<GameObject>();
 
         foreach(PlaceableObject placeableObject in placeableObjects) {
             var plObj = Instantiate(placeableObject.prefab, placeableObject.position, placeableObject.rotation);
             plObj.name = placeableObject.name;
-            Debug.Log(plObj.name);
+
+            createdObjects.Add(plObj);
         }
+
+        return createdObjects;
     }
 }

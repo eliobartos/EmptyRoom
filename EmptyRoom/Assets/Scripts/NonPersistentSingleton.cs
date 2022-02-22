@@ -19,7 +19,6 @@ where T : MonoBehaviour {
             // Set up the first instance
             // Need to call base.Awake() from the awake function of child class, needs to be protected override void Awake() methond implemented in child
             _instance = FindObjectOfType<T>();
-            Debug.Log("Here");
 
         } else {
             // Destory any new instances of this class

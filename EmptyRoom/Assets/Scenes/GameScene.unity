@@ -342,16 +342,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa56104d59fd4d3f8bcd78e3f80123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelWidth: 40
-  levelHeigth: 40
-  maxBallsOnLevel: 5
+  levelWidth: 25
+  levelHeigth: 25
+  maxBallsOnLevel: 9
+  arrowsPerLevel: 00000000000000000000000000000000000000000100000002000000040000000500000005000000
   ballsCollected: 0
   currentSanity: 100
   maxSanity: 100
   sanityBar: {fileID: 1346455450}
+  balls: []
   gridManager: {fileID: 488991483}
   playerLightManager: {fileID: 1838255097}
+  playerTransform: {fileID: 1838255093}
   _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
+  _arrowPrefab: {fileID: 7069783252629890430, guid: bd6d230c478274d58a6a732622193251, type: 3}
 --- !u!4 &491950648
 Transform:
   m_ObjectHideFlags: 0

@@ -16,9 +16,7 @@ public class RandomSpriteBehaviour : MonoBehaviour
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 
         int n = spriteList.Length;
-        Debug.Log(n);
         int sample = Random.Range(0, n);
-        Debug.Log(sample);
         renderer.sprite = spriteList[sample];
     }
 }

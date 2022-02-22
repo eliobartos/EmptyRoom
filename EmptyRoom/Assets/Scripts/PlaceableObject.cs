@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum PlaceableObjectType {
     Ball,
-    Decoration
+    Decoration,
+    Arrow
 }
 
 
