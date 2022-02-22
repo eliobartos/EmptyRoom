@@ -31,15 +31,15 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GameObject _ballPrefab;
 
     List<int[,]> worldStages;
-    List<Coordinates> ballsList;
+    List<IntCoordinates> ballsList;
 
     public void Start() {
         sanityBar.SetUp(maxSanity);
-        
+
         // Generate world the world
         var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
         gameWorld.generate_world();
-        
+
         worldStages = gameWorld.stages;
         var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
 
@@ -78,11 +78,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     // Convert list of coordinats into meaningful game object to be placed by gridManager
-    private List<PlaceableObject> CoordinatesToPlaceableObject(List<Coordinates> corList, PlaceableObjectType type, string name, GameObject prefab) {
+    private List<PlaceableObject> CoordinatesToPlaceableObject(List<IntCoordinates> corList, PlaceableObjectType type, string name, GameObject prefab) {
 
         List<PlaceableObject> plObjList = new List<PlaceableObject>();
 
-        foreach(Coordinates cor in corList) {
+        foreach(IntCoordinates cor in corList) {
             PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.x, cor.y);
             plObjList.Add(plObj);
         }
