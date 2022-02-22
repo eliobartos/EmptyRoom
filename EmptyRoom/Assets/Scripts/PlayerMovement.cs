@@ -9,8 +9,14 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed = 0.01f;
     Animator animator;
 
+    int levelWidth;
+    int levelHeight;
+
     public void Start() {
         animator = GetComponent<Animator>();
+
+        levelWidth = GameManager.instance.levelWidth;
+        levelHeight = GameManager.instance.levelHeigth;
     }
 
     // Update is called once per frame
@@ -19,17 +25,44 @@ public class PlayerMovement : MonoBehaviour
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
+        MoveThePlayer(inputX, inputY);
+        HandleAnimations(inputX, inputY);
+    }
+
+    private void MoveThePlayer(float inputX, float inputY) {
+
+        // Get and normalize input
         Vector2 moveVector = new Vector2(inputX, inputY);
         moveVector = moveVector.normalized;
 
+        // Calculate new position
         Vector3 pos = this.transform.position;
         pos.x = pos.x + moveVector.x * movementSpeed * Time.deltaTime;
         pos.y = pos.y + moveVector.y * movementSpeed * Time.deltaTime;
 
-        this.transform.position = pos;
+        // Check if outside of world
+        if(pos.x < 0) {
+            pos.x = 0;
+        }
 
-        HandleAnimations(inputX, inputY);
+        if(pos.x > levelWidth-1) {
+            pos.x = levelWidth - 1;
+        }
+
+        if(pos.y < 0) {
+            pos.y = 0;
+        }
+
+        if(pos.y > levelHeight-1) {
+            pos.y = levelHeight - 1;
+        }
+
+        // Apply movement
+        this.transform.position = pos;
     }
+
+    
+
 
     private void HandleAnimations(float inputX, float inputY) {
 
