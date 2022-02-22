@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,10 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2, Tile> _tiles;
     private List<BallBehaviour> _balls;
 
+
+    private const bool DO_NOT_REMOVE_VISIBLE_TILES = true;
+    private PlayerLigthManager playerLightManager;
+    private PlayerMovement playerMovement;
 
     public void GenerateGrid(int[,] gridArray) {
 
@@ -47,16 +52,20 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-
     // Updates previously created grid (tiles only)
     public void UpdateGrid(int[,] gridArray) {
 
         _width = gridArray.GetLength(0);
         _height = gridArray.GetLength(1);
 
+        var visibilityRadius = playerLightManager.GetMaxLightRadius();
+        Vector2 playerPosition = playerMovement.transform.position;
+
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-
+                if (DO_NOT_REMOVE_VISIBLE_TILES & ((playerPosition - new Vector2(x, y)).magnitude < visibilityRadius) ) {
+                    continue;
+                }
                 Tile tile = GetTile(new Vector2(x, y));
 
                 switch (gridArray[x, y]) {
@@ -66,7 +75,7 @@ public class GridManager : MonoBehaviour
                         break;
                     case 1:
                         if(tile.type != TileTypes.Wall)
-                            SwapTiles(tile, _tileWallPrefab, TileTypes.Wall, x, y);    
+                            SwapTiles(tile, _tileWallPrefab, TileTypes.Wall, x, y);
                         break;
                 }
             }
@@ -75,13 +84,13 @@ public class GridManager : MonoBehaviour
 
     // Destroy the current tile and place a new one instead
     public void SwapTiles(Tile currentTile, Tile newTilePrefab,TileTypes newTileType, int x, int y) {
-        
+
         Destroy(currentTile.gameObject);
-        
+
         var newTile = Instantiate(newTilePrefab, new Vector3(x, y, 0), Quaternion.identity);
         newTile.name = $"Tile x={x}, y={y}";
         newTile.Init(newTileType);
-        
+
         _tiles[new Vector2(x, y)] = newTile;
     }
 

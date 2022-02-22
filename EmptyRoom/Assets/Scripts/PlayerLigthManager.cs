@@ -29,11 +29,14 @@ public class PlayerLigthManager : MonoBehaviour
     public void SetTargetRadius(int level) {
         targetRadius = lightRadiusLevels[level];
     }
-    
+
     void SetRadius(float targetRadius) {
         float radius = Mathf.Lerp(playerLight.pointLightOuterRadius, targetRadius, radiusLerp);
 
         playerLight.pointLightOuterRadius = radius;
         playerLight.pointLightInnerRadius = radius * innerRadiusPercentage;
+    }
+    public float GetMaxLightRadius() {
+        return playerLight.pointLightOuterRadius;
     }
 }
