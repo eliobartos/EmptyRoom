@@ -342,15 +342,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa56104d59fd4d3f8bcd78e3f80123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelWidth: 50
-  levelHeigth: 50
+  levelWidth: 45
+  levelHeigth: 45
   maxBallsOnLevel: 9
-  arrowsPerLevel: 00000000000000000000000000000000000000000100000002000000040000000500000005000000
+  arrowsPerLevel: 00000000000000000100000001000000020000000200000003000000040000000500000005000000
   minArrowDistanceToPlayer: 5
-  maxArrowDistanceToPlayer: 10
+  maxArrowDistanceToPlayer: 20
   ballsCollected: 0
-  currentSanity: 100
-  maxSanity: 100
+  currentSanity: 120
+  maxSanity: 120
   sanityBar: {fileID: 1346455450}
   balls: []
   gridManager: {fileID: 488991483}
@@ -1008,15 +1008,15 @@ MonoBehaviour:
   radiusLerp: 0.1
   lightRadiusLevels:
   - 50
-  - 8
   - 7
-  - 6
+  - 6.2
   - 5.5
   - 5
   - 4.5
   - 4
-  - 3.5
-  - 3
+  - 3.6
+  - 3.2
+  - 2.7
 --- !u!95 &1838255098
 Animator:
   serializedVersion: 3

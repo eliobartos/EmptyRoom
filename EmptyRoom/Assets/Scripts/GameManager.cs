@@ -42,8 +42,15 @@ public class GameManager : NonPersistentSingleton<GameManager>
     List<int[,]> worldStages;
   
     public void Start() {
-        sanityBar.SetUp(maxSanity);
+
+        // Initialise object containers
         arrows = new List<GameObject>();
+
+        // Set up gameplayer
+        sanityBar.SetUp(maxSanity);
+
+        // Spawn player randomly on a map
+        playerTransform.position = new Vector3(Random.Range(1, levelWidth - 1), Random.Range(1, levelHeigth - 1));
 
         // Generate world the world
         var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
