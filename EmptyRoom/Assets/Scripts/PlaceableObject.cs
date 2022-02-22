@@ -27,4 +27,13 @@ public class PlaceableObject
         type = _type;
         name = _name + $" x={x}, y={y}";
     }
+
+    public PlaceableObject(GameObject _prefab, PlaceableObjectType _type, string _name, int x, int y, Quaternion quatRotation) {
+        
+        position = new Vector3(x, y, 0);
+        prefab = _prefab;
+        rotation = quatRotation;
+        type = _type;
+        name = _name + $" x={x}, y={y}";
+    }
 }

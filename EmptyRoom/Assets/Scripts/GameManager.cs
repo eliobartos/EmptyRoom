@@ -70,6 +70,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         if(ballsCollected == maxBallsOnLevel) {
             LevelWon();
+            return;
         }
 
         // Update the world
@@ -79,7 +80,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
         playerLightManager.SetTargetRadius(ballsCollected);
 
         AddArrowsToWorld(arrowsPerLevel[ballsCollected]);
-        Debug.Log(arrows.Count);
 
     }
 
@@ -95,9 +95,8 @@ public class GameManager : NonPersistentSingleton<GameManager>
             ArrowData nextArrow = GameWorldUtils.generate_arrow(worldStages[ballsCollected], playerPosition, GameObjectsToIntCoordinates(balls));
 
             // Convert coordinates to real object
-            PlaceableObject ArrowObject = new PlaceableObject(_arrowPrefab, PlaceableObjectType.Arrow, $"Arrow {i}", nextArrow.origin.x, nextArrow.origin.y);
-            Debug.Log(nextArrow.origin.x);
-            Debug.Log(nextArrow.origin.y);
+            PlaceableObject ArrowObject = new PlaceableObject(_arrowPrefab, PlaceableObjectType.Arrow, $"Arrow {i}", nextArrow.origin.x, nextArrow.origin.y, Quaternion.FromToRotation(Vector3.left, new Vector3(nextArrow.direction.x, nextArrow.direction.y, 0)));
+
             // Add object to list for grid manager
             placeableObjects.Add(ArrowObject);
         }
