@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public float sanityPctForPlayerSpriteChange = 0.2f;
     public float movementSpeed = 0.01f;
     public bool canMove = false;
     Animator animator;
@@ -37,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
         MoveThePlayer(inputX, inputY);
         HandleAnimations(inputX, inputY);
+        HandleMovingSounds(inputX, inputY);
     }
 
     private void MoveThePlayer(float inputX, float inputY) {
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.Play("Down");
             }
 
-        } else if(GameManager.instance.ballsCollected > 0 & GameManager.instance.currentSanity/GameManager.instance.maxSanity > sanityPctForPlayerSpriteChange) {
+        } else if(GameManager.instance.ballsCollected > 0 & GameManager.instance.currentSanity/GameManager.instance.maxSanity > GameManager.instance.lowSanityPct) {
 
             if(inputX < 0) {
                 animator.Play("Left-Lantern", 0);
@@ -117,6 +117,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
+    }
+
+    private void HandleMovingSounds(float inputX, float inputY) {
+        if(inputX == 0 & inputY == 0) {
+            AudioManager.instance.Stop("Footsteps");
+        } else {
+            AudioManager.instance.Play("Footsteps");
+        }
     }
 
     

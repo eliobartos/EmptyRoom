@@ -13,6 +13,8 @@ public class BallBehaviour : MonoBehaviour
             GameManager.instance.balls.Remove(this.gameObject);
             Destroy(this.gameObject);
             GameManager.instance.BallCollected();
+
+            AudioManager.instance.ForcePlay("PickUp");
         }
 
         

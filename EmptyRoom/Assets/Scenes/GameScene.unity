@@ -187,7 +187,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324462640
 GameObject:
@@ -336,7 +336,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &488991482
 GameObject:
@@ -371,7 +371,6 @@ MonoBehaviour:
   _height: 0
   _tileNormalPrefab: {fileID: 4457547144873855493, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
   _tileWallPrefab: {fileID: 6557920415845239738, guid: c46d7d29a5c4c4dcda431faad4f40b85, type: 3}
-  DO_NOT_REMOVE_VISIBLE_TILES: 1
   playerLightManager: {fileID: 1838255097}
   playerMovement: {fileID: 1838255094}
 --- !u!4 &488991484
@@ -423,9 +422,14 @@ MonoBehaviour:
   arrowsPerLevel: 00000000000000000100000001000000020000000200000003000000040000000500000005000000
   minArrowDistanceToPlayer: 5
   maxArrowDistanceToPlayer: 20
+  onlyUpdateNonVisibleObject: 1
+  secondMusicBallsNeeded: 4
+  thirdMusicBallsNeeded: 7
+  FadeInOutTime: 1
   ballsCollected: 0
   currentSanity: 120
   maxSanity: 120
+  lowSanityPct: 0.2
   sanityBar: {fileID: 1346455450}
   balls: []
   gridManager: {fileID: 488991483}
@@ -595,6 +599,82 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetZoom: 3
   zoomLerpPct: 0.1
+  startDelayTime: 0
+  startZoomSpeed: 1
+--- !u!1 &801099878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 801099880}
+  - component: {fileID: 801099879}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &801099879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801099878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a020c58b262470aaf093b56ddac2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Footsteps
+    volume: 0.1
+    loop: 1
+    clip: {fileID: 8300000, guid: 84e7866686a5d4a5ea7c0a2ccc768f70, type: 3}
+    source: {fileID: 0}
+  - name: PickUp
+    volume: 0.1
+    loop: 0
+    clip: {fileID: 8300000, guid: 54b846043741544838b5b58694f3e77b, type: 3}
+    source: {fileID: 0}
+  - name: Theme1
+    volume: 0.1
+    loop: 1
+    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    source: {fileID: 0}
+  - name: Theme2
+    volume: 0.1
+    loop: 1
+    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    source: {fileID: 0}
+  - name: Theme3
+    volume: 0.1
+    loop: 1
+    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    source: {fileID: 0}
+  - name: Sanity
+    volume: 1
+    loop: 1
+    clip: {fileID: 8300000, guid: b965e0bf109e74dbf88357c0a4b81f81, type: 3}
+    source: {fileID: 0}
+--- !u!4 &801099880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801099878}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346455446
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,7 +1017,7 @@ RectTransform:
   m_Children:
   - {fileID: 324462641}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1030,7 +1110,7 @@ Transform:
   m_Children:
   - {fileID: 1488033174}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1838255094
 MonoBehaviour:
@@ -1044,7 +1124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56aacbcd72d1144b6a728d6bf680c537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sanityPctForPlayerSpriteChange: 0.2
   movementSpeed: 4
   canMove: 0
 --- !u!50 &1838255095

@@ -12,6 +12,9 @@ public class CameraBehaviour : MonoBehaviour
     public float targetZoom = 3.0f;
     public float zoomLerpPct = 0.01f;
 
+    public float startDelayTime = 3.0f;
+    public float startZoomSpeed = 0.1f;
+
     void Start() {
         levelWidth = GameManager.instance.levelWidth;
         levelHeight = GameManager.instance.levelHeigth;
@@ -40,9 +43,9 @@ public class CameraBehaviour : MonoBehaviour
     }
 
     IEnumerator StartingZoomIn() {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(startDelayTime);
         while(Camera.main.orthographicSize > targetZoom) {
-            Camera.main.orthographicSize -= 0.1f;
+            Camera.main.orthographicSize -= startZoomSpeed;
             yield return new WaitForFixedUpdate();
         }
         

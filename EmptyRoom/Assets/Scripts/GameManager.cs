@@ -17,11 +17,17 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int maxArrowDistanceToPlayer = 10;
     [SerializeField] private bool onlyUpdateNonVisibleObject=true;
 
+    [Header("Sound Variables")]
+    public int secondMusicBallsNeeded = 4;
+    public int thirdMusicBallsNeeded = 7;
+    public float FadeInOutTime = 1.0f;
+
     // Player Variables
     [Header("Player Variables")]
     public int ballsCollected = 0;
     public float currentSanity = 100.0f;
     public float maxSanity = 100.0f;
+    public float lowSanityPct = 0.2f;
 
     // UI Objects
     [Header("References to Objects")]
@@ -98,6 +104,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         AddArrowsToWorld(arrowsPerLevel[ballsCollected], onlyUpdateNonVisibleObject);
 
+        // Handle Sound Changes
+        HandleSoundChanges();
+
     }
 
     private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {
@@ -141,6 +150,12 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     void ReduceSanityOverTime() {
         currentSanity -= Time.deltaTime;
+
+        if(currentSanity/maxSanity < lowSanityPct) {
+            AudioManager.instance.StartWithFadeIn("Sanity", currentSanity);
+        } else {
+            AudioManager.instance.Stop("Sanity");
+        }
     }
 
     // Convert list of coordinats into meaningful game object to be placed by gridManager
@@ -178,6 +193,17 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public void SetCanPlayerMove(bool _canMove) {
         playerMovement.canMove = _canMove;
     }
+
+    private void HandleSoundChanges() {
+        if(ballsCollected == secondMusicBallsNeeded) {
+            AudioManager.instance.StopWithFadeout("Theme1", FadeInOutTime);
+            AudioManager.instance.StartWithFadeIn("Theme2", FadeInOutTime, FadeInOutTime);
+        } else if(ballsCollected == thirdMusicBallsNeeded) {
+            AudioManager.instance.StopWithFadeout("Theme2", FadeInOutTime);
+            AudioManager.instance.StartWithFadeIn("Theme3", FadeInOutTime, FadeInOutTime);
+        }
+    }
+
 
     // Debug function to plot the matrics
     void printMatrix(int[,] array) {
