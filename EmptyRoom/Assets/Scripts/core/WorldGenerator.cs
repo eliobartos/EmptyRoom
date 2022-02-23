@@ -38,27 +38,33 @@ class GameWorld {
 
     public const int CELL_MARK_REWARD = 2;
     public const int CELL_MARK_UNUSED_AFTER_THIS = 5;
-    public readonly int width;
-    public readonly int height;
-    public readonly int nr_rewards;
-
-    public readonly double starting_percolation_prob;
-
-    public readonly double final_percolation_prob;
-
-    public readonly int percolation_steps;
+    public int width;
+    public int height;
+    public int nr_rewards;
+    public List<double> percolation_stages_probs;
     public double[,] score_matrix;
     public List<int[,]> stages;
 
     public List<IntCoordinates> rewards;
-    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_precolation_prob=0.64, int percolation_steps=5) {
+    private void _init_block(List<double> percolation_stages_probs, int width, int height, int nr_rewards) {
         this.width = width;
         this.height = height;
         this.nr_rewards = nr_rewards;
-        this.starting_percolation_prob = starting_percolation_prob;
-        this.final_percolation_prob =final_precolation_prob;
-        this.percolation_steps = percolation_steps;
+        this.percolation_stages_probs = percolation_stages_probs;
     }
+    public GameWorld(List<double> percolation_stages_probs, int width=25, int height=25, int nr_rewards=9) {
+        _init_block(percolation_stages_probs, width, height, nr_rewards);
+    }
+
+    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_percolation_prob=0.64, int percolation_steps=5) {
+        var stages_probs = new List<double>();
+        double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
+        for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
+            stages_probs.Add(starting_percolation_prob + step_nr * threshold_step);
+        }
+        _init_block(stages_probs, width, height, nr_rewards);
+    }
+
     private void _generate_matrix(Random rand_gen) {
         score_matrix = new double[width, height];
         for(var x=0; x<width; x++) {
@@ -137,13 +143,11 @@ class GameWorld {
 
     private void _generate_stages() {
         stages = new List<int[,]>();
-        double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
-        for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
-            double threshold = starting_percolation_prob + step_nr * threshold_step;
+        foreach (var percolation_prob in percolation_stages_probs) {
             var stage = new int[width, height];
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    stage[x, y] = (score_matrix[x, y] > threshold) ? CELL_MARK_OCCUPIED: CELL_MARK_PASSABLE;
+                    stage[x, y] = (score_matrix[x, y] > percolation_prob) ? CELL_MARK_OCCUPIED: CELL_MARK_PASSABLE;
                 }
             }
             _polish_matrix(stage);
