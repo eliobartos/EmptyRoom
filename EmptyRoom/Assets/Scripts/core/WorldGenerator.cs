@@ -302,7 +302,7 @@ class GameWorldUtils {
         }
     }
 
-    private static IntCoordinates place_an_object_with_requirements(int[,] world_stage, List<PlacementRequirement> placement_requirements, Int32? seed = null) {
+    private static IntCoordinates place_while_fulfilling_requirements(int[,] world_stage, List<PlacementRequirement> placement_requirements, Int32? seed = null) {
         Random rand_gen;
         if (seed.HasValue) {
             rand_gen = new Random(seed.Value);
@@ -335,7 +335,7 @@ class GameWorldUtils {
             PlacementRequirement.from_obtacles(targets, min_distance: min_distance_to_targets),
             PlacementRequirement.from_obtacles(player_position_list, max_distance: max_distance_to_player),
         };
-        var origin = place_an_object_with_requirements(world_stage, placement_requirements);
+        var origin = place_while_fulfilling_requirements(world_stage, placement_requirements);
 
         var min_target = targets.First();
         var min_distance = origin.distance_to_other(min_target);
@@ -350,5 +350,27 @@ class GameWorldUtils {
         var direction = new Vector2Substitute(min_target.x - origin.x, min_target.y - origin.y);
         direction.normalize();
         return new ArrowData(origin, direction);
+    }
+
+    public static List<IntCoordinates> find_space_for_n_objects(int[,] world_stage, int nr_objects, double min_distance_between_objects = PRECISION_TOLERANCE,
+                                                                List<IntCoordinates> obstacles=null, double min_distance_to_obstacles = PRECISION_TOLERANCE,
+                                                                IntCoordinates player_position=null, double min_distance_to_player=PRECISION_TOLERANCE) {
+        obstacles = obstacles ?? new List<IntCoordinates>();
+        var player_position_list = new List<IntCoordinates>();
+        if (player_position != null) {
+            player_position_list.Append(player_position);
+        }
+        var coordinates_to_return = new List<IntCoordinates>();
+        var placement_requirements = new List<PlacementRequirement>() {
+            PlacementRequirement.from_obtacles(player_position_list, min_distance: min_distance_to_player),
+            PlacementRequirement.from_obtacles(obstacles, min_distance: min_distance_to_obstacles),
+            PlacementRequirement.from_obtacles(coordinates_to_return, min_distance: min_distance_between_objects)
+        };
+
+        for (int object_index = 0; object_index < nr_objects; object_index++) {
+            var coord = place_while_fulfilling_requirements(world_stage, placement_requirements);
+            coordinates_to_return.Add(coord);
+        }
+        return coordinates_to_return;
     }
 }
