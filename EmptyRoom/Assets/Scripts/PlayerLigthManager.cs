@@ -37,6 +37,6 @@ public class PlayerLigthManager : MonoBehaviour
         playerLight.pointLightInnerRadius = radius * innerRadiusPercentage;
     }
     public float GetMaxLightRadius() {
-        return playerLight.pointLightOuterRadius;
+        return targetRadius;
     }
 }

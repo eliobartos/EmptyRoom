@@ -15,7 +15,6 @@ public class GridManager : MonoBehaviour
     private List<BallBehaviour> _balls;
 
 
-    [SerializeField] private bool DO_NOT_REMOVE_VISIBLE_TILES = true;
     [SerializeField] private PlayerLigthManager playerLightManager;
     [SerializeField] private PlayerMovement playerMovement;
 
@@ -53,7 +52,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Updates previously created grid (tiles only)
-    public void UpdateGrid(int[,] gridArray) {
+    public void UpdateGrid(int[,] gridArray, bool onlyUpdateNonVisibleTiles=false) {
 
         _width = gridArray.GetLength(0);
         _height = gridArray.GetLength(1);
@@ -63,7 +62,7 @@ public class GridManager : MonoBehaviour
 
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                if (DO_NOT_REMOVE_VISIBLE_TILES & ((playerPosition - new Vector2(x, y)).magnitude < visibilityRadius) ) {
+                if (onlyUpdateNonVisibleTiles & ((playerPosition - new Vector2(x, y)).magnitude < visibilityRadius) ) {
                     continue;
                 }
                 Tile tile = GetTile(new Vector2(x, y));
