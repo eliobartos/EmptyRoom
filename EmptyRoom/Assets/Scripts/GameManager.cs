@@ -44,6 +44,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private Transform playerTransform;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Light2D globalLight;
+    [SerializeField] private SubtitleManager subtitleManager;
 
     // Prefabs
     [Header("Prefabs")]
@@ -73,6 +74,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         gridManager.GenerateGrid(worldStages[0]);
         balls = gridManager.AddPlaceableObjects(ballsList);
+
+        // Start Subtitles
+        subtitleManager.DisplaySubtitle(ballsCollected, 1.0f);
 
     }
 
@@ -108,6 +112,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Handle Sound Changes
         HandleSoundChanges();
+
+        // Show Subtitles
+        subtitleManager.DisplaySubtitle(ballsCollected);
 
     }
 

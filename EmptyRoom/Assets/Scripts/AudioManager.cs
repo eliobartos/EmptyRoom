@@ -35,7 +35,7 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.source.Play();
     }
-    
+
     public void Stop(string name) {
         Sound s = Array.Find(sounds, sound => sound.name == name);
 
@@ -60,6 +60,24 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
             s.source.Play();
             StartCoroutine(FadeIn(s, fadeInDuration, delay));
         }
+
+    }
+
+    public void PlayOneOf(string[] names) {
+
+        // Check if any voiceover is playing, return (do nothing)
+        foreach(string name in names) {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+
+            if(s.source.isPlaying == true) {
+                return;
+            }
+        }
+
+        // Else choose one randomly and start playing it
+        int chosenSoundIndex = UnityEngine.Random.Range(0, names.Length);
+        Play(names[chosenSoundIndex]);
+
 
     }
 
