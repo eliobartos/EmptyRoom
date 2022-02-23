@@ -15,6 +15,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int[] arrowsPerLevel;
     public int minArrowDistanceToPlayer = 5;
     public int maxArrowDistanceToPlayer = 10;
+    [SerializeField] private bool onlyUpdateNonVisibleObject=true;
 
     // Player Variables
     [Header("Player Variables")]
@@ -36,7 +37,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private Transform playerTransform;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Light2D globalLight;
-    [SerializeField] private bool onlyUpdateNonVisibleObject=true;
 
     // Prefabs
     [Header("Prefabs")]
@@ -102,7 +102,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {
 
-        if(destroyPrevious) DestroyGameObjects(arrows, doNotDestroyVisibleArrows=doNotDestroyVisibleArrows);
+        if(destroyPrevious) DestroyGameObjects(arrows, doNotDestroyVisibleArrows);
 
         List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
 
