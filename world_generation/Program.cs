@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace world_generation
@@ -8,10 +9,15 @@ namespace world_generation
     {
         static void Main(string[] args)
         {
+            test_world_generation();
+            return;
             test_arrow_placement();
             return;
             test_reward_placement();
             return;
+        }
+
+        private static void test_world_generation() {
             var wg = new GameWorld(50, 50);
             wg.generate_world();
             wg._place_rewards_on_stages();
@@ -20,6 +26,11 @@ namespace world_generation
                 Console.Clear();
                 GameWorld.print_world_matrix_to_console(wg.stages[i]);
             }
+            List<double> percolation_probs = new List<double>() {1.0, 0.9, 0.8, 0.7};
+            wg = new GameWorld(percolation_probs);
+            wg.generate_world();
+            wg._place_rewards_on_stages();
+            GameWorld.print_world_matrix_to_console(wg.stages.Last());
         }
 
         private static void test_reward_placement(Int32 seed=10, int nr_tests=200) {
