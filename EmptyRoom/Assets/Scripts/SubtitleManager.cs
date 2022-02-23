@@ -11,8 +11,7 @@ public class SubtitleManager : MonoBehaviour
 
     Coroutine currentCoroutine = null;
 
-    void Start() {
-
+    void Awake() {
         SetUpDict();
     }
 

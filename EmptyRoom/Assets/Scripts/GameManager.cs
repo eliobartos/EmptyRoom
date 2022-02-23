@@ -76,7 +76,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         balls = gridManager.AddPlaceableObjects(ballsList);
 
         // Start Subtitles
-        subtitleManager.DisplaySubtitle(ballsCollected, 1.0f);
+        subtitleManager.DisplaySubtitle(ballsCollected, 3.0f);
 
     }
 

@@ -558,7 +558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 25, y: 25, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -610,8 +610,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetZoom: 3
   zoomLerpPct: 0.1
-  startDelayTime: 0
-  startZoomSpeed: 1
+  startDelayTime: 3
+  startZoomSpeed: 0.1
 --- !u!1 &801099878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Remember: The room is empty. The room is empty. There is nothing in here.'
+  m_Text: 
 --- !u!222 &1680261299
 CanvasRenderer:
   m_ObjectHideFlags: 0
