@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.UI;
 
 public class GameManager : NonPersistentSingleton<GameManager>
 {
@@ -17,11 +18,13 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int maxArrowDistanceToPlayer = 10;
     [SerializeField] private bool onlyUpdateNonVisibleObject=true;
     public List<double> percolationStages;
+    
 
     [Header("Sound Variables")]
     public int secondMusicBallsNeeded = 4;
     public int thirdMusicBallsNeeded = 7;
     public float FadeInOutTime = 1.0f;
+    public string[] voiceOverList;
 
     // Player Variables
     [Header("Player Variables")]
@@ -45,6 +48,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Light2D globalLight;
     [SerializeField] private SubtitleManager subtitleManager;
+    [SerializeField] private Image transitionImage;
 
     // Prefabs
     [Header("Prefabs")]
@@ -75,6 +79,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
         gridManager.GenerateGrid(worldStages[0]);
         balls = gridManager.AddPlaceableObjects(ballsList);
 
+        // Start scene transition
+        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 1.0f, 0.0f, 1.0f));
+
         // Start Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected, 3.0f);
 
@@ -93,20 +100,22 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public void BallCollected() {
         ballsCollected += 1;
 
-        if(ballsCollected == maxBallsOnLevel) {
-            LevelWon();
-            return;
-        }
-
         if(ballsCollected == 1) {
             globalLight.gameObject.SetActive(false);
+        } else if(ballsCollected == 9) {
+            globalLight.gameObject.SetActive(true);
         }
 
         // Reduce player light
         playerLightManager.SetTargetRadius(ballsCollected);
 
         // Update the world
-        gridManager.UpdateGrid(worldStages[ballsCollected], onlyUpdateNonVisibleObject);
+        if(ballsCollected == 9) {
+            gridManager.UpdateGrid(worldStages[0], onlyUpdateNonVisibleObject);
+        } else {
+            gridManager.UpdateGrid(worldStages[ballsCollected], onlyUpdateNonVisibleObject);
+        }
+        
 
         AddArrowsToWorld(arrowsPerLevel[ballsCollected], onlyUpdateNonVisibleObject);
 
@@ -115,6 +124,12 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Show Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected);
+
+        // End the level
+        if(ballsCollected == maxBallsOnLevel) {
+            LevelWon();
+            return;
+        }
 
     }
 
@@ -191,9 +206,17 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     void LevelWon() {
-        SceneManager.LoadScene("GameScene");
+        playerMovement.canMove = false;
+        AudioManager.instance.StopWithFadeout("Theme3", 5.0f);
+        AudioManager.instance.StopAllWithFadeout(voiceOverList, 5.0f);
+        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 0.0f, 1.0f, 1.0f, 4.0f));
+        StartCoroutine(LoadSceneDelay("MainMenu", 5.0f));
     }
 
+    IEnumerator LoadSceneDelay(string sceneName, float delay) {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
+    }
     void LevelLost() {
         SceneManager.LoadScene("GameScene");
     }
@@ -213,6 +236,23 @@ public class GameManager : NonPersistentSingleton<GameManager>
         }
     }
 
+    // Helper function for scene transitions
+    public static IEnumerator ChangeImageAlphaAnim(Image img, float startAlpha, float endAlpha, float duration = 1.0f, float delay = 0.0f) {
+
+        // Wait for delay time
+        yield return new WaitForSeconds(delay);
+
+        // Start Fade In
+        float currentTime = 0;
+
+        while(currentTime < duration) {
+            currentTime += Time.deltaTime;
+            var tempColor = img.color;
+            tempColor.a = Mathf.Lerp(startAlpha, endAlpha, currentTime / duration);
+            img.color = tempColor;
+            yield return null;
+        }
+    }
 
     // Debug function to plot the matrics
     void printMatrix(int[,] array) {

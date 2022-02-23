@@ -416,26 +416,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa56104d59fd4d3f8bcd78e3f80123a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelWidth: 45
-  levelHeigth: 45
+  levelWidth: 40
+  levelHeigth: 40
   maxBallsOnLevel: 9
-  arrowsPerLevel: 00000000000000000100000001000000020000000200000003000000040000000500000005000000
+  arrowsPerLevel: 00000000000000000200000003000000040000000500000006000000070000000800000000000000
   minArrowDistanceToPlayer: 5
   maxArrowDistanceToPlayer: 20
   onlyUpdateNonVisibleObject: 1
   percolationStages:
   - 1
-  - 0.91
-  - 0.83
-  - 0.77
-  - 0.73
-  - 0.7
-  - 0.67
+  - 0.95
+  - 0.92
+  - 0.85
+  - 0.79
+  - 0.75
+  - 0.72
+  - 0.68
   - 0.63
-  - 0.62
   secondMusicBallsNeeded: 4
   thirdMusicBallsNeeded: 7
   FadeInOutTime: 1
+  voiceOverList:
+  - Voiceover1
+  - Voiceover2
   ballsCollected: 0
   currentSanity: 120
   maxSanity: 120
@@ -448,6 +451,7 @@ MonoBehaviour:
   playerMovement: {fileID: 1838255094}
   globalLight: {fileID: 438622180}
   subtitleManager: {fileID: 947686788}
+  transitionImage: {fileID: 1514625288}
   _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
   _arrowPrefab: {fileID: 7069783252629890430, guid: bd6d230c478274d58a6a732622193251, type: 3}
 --- !u!4 &491950648
@@ -672,7 +676,7 @@ MonoBehaviour:
     loop: 1
     clip: {fileID: 8300000, guid: b965e0bf109e74dbf88357c0a4b81f81, type: 3}
     source: {fileID: 0}
-  - name: Voiceover
+  - name: Voiceover1
     volume: 1
     loop: 0
     clip: {fileID: 8300000, guid: f17b217a2f31145e2a7e56a8231f5e24, type: 3}
@@ -990,6 +994,81 @@ Transform:
   m_Father: {fileID: 1838255093}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1514625286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1514625287}
+  - component: {fileID: 1514625289}
+  - component: {fileID: 1514625288}
+  m_Layer: 5
+  m_Name: Transition Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1514625287
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514625286}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1610543606}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1514625288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514625286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1514625289
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514625286}
+  m_CullTransparentMesh: 1
 --- !u!1 &1610543602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,6 +1162,7 @@ RectTransform:
   m_Children:
   - {fileID: 324462641}
   - {fileID: 1680261297}
+  - {fileID: 1514625287}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1334,7 +1414,7 @@ MonoBehaviour:
   - 4
   - 3.6
   - 3.2
-  - 2.7
+  - 0
 --- !u!95 &1838255098
 Animator:
   serializedVersion: 3

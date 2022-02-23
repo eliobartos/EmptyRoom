@@ -33,9 +33,9 @@ public class SubtitleManager : MonoBehaviour
     IEnumerator DisplayForXSeconds(GameObject obj, float duration, float delay) {
         
         yield return new WaitForSeconds(delay);
-        
+
         // Activate subtitles and play voiceover
-        AudioManager.instance.PlayOneOf(new string[] {"Voiceover", "Voiceover2"});
+        AudioManager.instance.PlayOneOf(GameManager.instance.voiceOverList);
         obj.SetActive(true);
         
         yield return new WaitForSeconds(duration);

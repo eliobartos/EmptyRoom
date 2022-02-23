@@ -81,6 +81,16 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
 
     }
 
+    public void StopAllWithFadeout(string[] names, float duration) {
+        foreach(string name in names) {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+
+            if(s.source.isPlaying == true) {
+                StopWithFadeout(name, duration);
+            }
+        }
+    }
+
     // Helper function for fading out
     IEnumerator FadeOut(Sound s, float duration) {
         float currentTime = 0;
