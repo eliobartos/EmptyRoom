@@ -371,6 +371,9 @@ MonoBehaviour:
   _height: 0
   _tileNormalPrefab: {fileID: 4457547144873855493, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
   _tileWallPrefab: {fileID: 6557920415845239738, guid: c46d7d29a5c4c4dcda431faad4f40b85, type: 3}
+  DO_NOT_REMOVE_VISIBLE_TILES: 1
+  playerLightManager: {fileID: 1838255097}
+  playerMovement: {fileID: 1838255094}
 --- !u!4 &488991484
 Transform:
   m_ObjectHideFlags: 0

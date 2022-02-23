@@ -36,6 +36,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private Transform playerTransform;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Light2D globalLight;
+    [SerializeField] private bool onlyUpdateNonVisibleObject=true;
 
     // Prefabs
     [Header("Prefabs")]
@@ -43,7 +44,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GameObject _arrowPrefab;
 
     List<int[,]> worldStages;
-  
+
     public void Start() {
 
         // Initialise object containers
@@ -89,19 +90,19 @@ public class GameManager : NonPersistentSingleton<GameManager>
             globalLight.gameObject.SetActive(false);
         }
 
-        // Update the world
-        gridManager.UpdateGrid(worldStages[ballsCollected]);
-
         // Reduce player light
         playerLightManager.SetTargetRadius(ballsCollected);
 
-        AddArrowsToWorld(arrowsPerLevel[ballsCollected]);
+        // Update the world
+        gridManager.UpdateGrid(worldStages[ballsCollected], onlyUpdateNonVisibleObject);
+
+        AddArrowsToWorld(arrowsPerLevel[ballsCollected], onlyUpdateNonVisibleObject);
 
     }
 
-    private void AddArrowsToWorld(int n, bool destroyPrevious = true) {
+    private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {
 
-        if(destroyPrevious) DestroyGameObjects(arrows);
+        if(destroyPrevious) DestroyGameObjects(arrows, doNotDestroyVisibleArrows=doNotDestroyVisibleArrows);
 
         List<PlaceableObject> placeableObjects = new List<PlaceableObject>();
 
@@ -126,8 +127,14 @@ public class GameManager : NonPersistentSingleton<GameManager>
         return;
     }
 
-    private void DestroyGameObjects(List<GameObject> gameObjects) {
+    private void DestroyGameObjects(List<GameObject> gameObjects, bool doNotDestroyVisibleObjects=false) {
+        var playerPosition = playerMovement.transform.position;
         foreach(GameObject gameObject in gameObjects) {
+            if (doNotDestroyVisibleObjects) {
+                if ((gameObject.transform.position - playerPosition).magnitude < playerLightManager.GetMaxLightRadius()) {
+                    continue;
+                }
+            }
             Destroy(gameObject);
         }
     }
@@ -180,6 +187,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
                 row += array[i, j];
             }
             Debug.Log("Row (" + i + ") " + row);
-        } 
+        }
     }
 }
