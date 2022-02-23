@@ -16,6 +16,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int minArrowDistanceToPlayer = 5;
     public int maxArrowDistanceToPlayer = 10;
     [SerializeField] private bool onlyUpdateNonVisibleObject=true;
+    public List<double> percolationStages;
 
     [Header("Sound Variables")]
     public int secondMusicBallsNeeded = 4;
@@ -64,8 +65,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Generate world the world
         // var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
-        var stagesProbs = new List<double>() {1.0, 0.89, 0.81, 0.75, 0.72, 0.69, 0.67, 0.65, 0.63, 0.62};
-        var gameWorld = new GameWorld(stagesProbs, levelWidth, levelHeigth, maxBallsOnLevel);
+        var gameWorld = new GameWorld(percolationStages, levelWidth, levelHeigth, maxBallsOnLevel);
         gameWorld.generate_world();
 
         worldStages = gameWorld.stages;

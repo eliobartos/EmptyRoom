@@ -423,6 +423,16 @@ MonoBehaviour:
   minArrowDistanceToPlayer: 5
   maxArrowDistanceToPlayer: 20
   onlyUpdateNonVisibleObject: 1
+  percolationStages:
+  - 1
+  - 0.89
+  - 0.81
+  - 0.75
+  - 0.72
+  - 0.69
+  - 0.67
+  - 0.63
+  - 0.62
   secondMusicBallsNeeded: 4
   thirdMusicBallsNeeded: 7
   FadeInOutTime: 1
