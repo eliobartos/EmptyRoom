@@ -43,7 +43,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GameObject _arrowPrefab;
 
     List<int[,]> worldStages;
-  
+
     public void Start() {
 
         // Initialise object containers
@@ -89,11 +89,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
             globalLight.gameObject.SetActive(false);
         }
 
-        // Update the world
-        gridManager.UpdateGrid(worldStages[ballsCollected]);
-
         // Reduce player light
         playerLightManager.SetTargetRadius(ballsCollected);
+
+        // Update the world
+        gridManager.UpdateGrid(worldStages[ballsCollected]);
 
         AddArrowsToWorld(arrowsPerLevel[ballsCollected]);
 
@@ -180,6 +180,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
                 row += array[i, j];
             }
             Debug.Log("Row (" + i + ") " + row);
-        } 
+        }
     }
 }

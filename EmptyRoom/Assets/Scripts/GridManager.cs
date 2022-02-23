@@ -15,9 +15,9 @@ public class GridManager : MonoBehaviour
     private List<BallBehaviour> _balls;
 
 
-    private const bool DO_NOT_REMOVE_VISIBLE_TILES = true;
-    private PlayerLigthManager playerLightManager;
-    private PlayerMovement playerMovement;
+    [SerializeField] private bool DO_NOT_REMOVE_VISIBLE_TILES = true;
+    [SerializeField] private PlayerLigthManager playerLightManager;
+    [SerializeField] private PlayerMovement playerMovement;
 
     public void GenerateGrid(int[,] gridArray) {
 
