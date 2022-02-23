@@ -17,7 +17,7 @@ class IntCoordinates {
             neighbors.Add(new IntCoordinates(x + delta, y));
             neighbors.Add(new IntCoordinates(x, y + delta));
         }
-        return neighbors.Where(coord => (coord.x >= 0) & (coord.x < width) & (coord.y >= 0) & (coord.y < height)).ToList();
+        return neighbors.Where(coord => (coord.x >= 0) && (coord.x < width) && (coord.y >= 0) && (coord.y < height)).ToList();
     }
 
     public int distance_to_other(IntCoordinates other) {
