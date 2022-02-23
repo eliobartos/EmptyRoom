@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class GameManager : NonPersistentSingleton<GameManager>
 {
 
+    bool gameOver = false;
+
     // Game Manager Variables
     [Header("Level Generating Variables")]
     public int levelWidth = 25;
@@ -91,8 +93,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
         ReduceSanityOverTime();
         sanityBar.UpdateBar(currentSanity);
 
-        if(currentSanity <= 0.0f) {
+        if(currentSanity <= 0.0f && gameOver == false) {
             LevelLost();
+            gameOver = true;
         }
     }
 
@@ -207,18 +210,27 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     void LevelWon() {
         playerMovement.canMove = false;
-        AudioManager.instance.StopWithFadeout("Theme3", 5.0f);
-        AudioManager.instance.StopAllWithFadeout(voiceOverList, 5.0f);
-        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 0.0f, 1.0f, 1.0f, 4.0f));
-        StartCoroutine(LoadSceneDelay("MainMenu", 5.0f));
+        AudioManager.instance.StopWithFadeout("Theme3", 8.0f);
+        AudioManager.instance.StopAllWithFadeout(voiceOverList, 8.0f);
+        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 0.0f, 1.0f, 4.0f, 4.0f));
+        StartCoroutine(LoadSceneDelay("MainMenu", 8.0f));
     }
 
     IEnumerator LoadSceneDelay(string sceneName, float delay) {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(sceneName);
     }
+
     void LevelLost() {
-        SceneManager.LoadScene("GameScene");
+        subtitleManager.DisplaySubtitle(10);
+        playerLightManager.SetTargetRadiusDirectly(0.0f);
+        playerMovement.canMove = false;
+        AudioManager.instance.StopWithFadeout("Sanity", 8.0f);
+        AudioManager.instance.StopAllWithFadeout(new string[] {"Theme1", "Theme2", "Theme3"}, 8.0f);
+        AudioManager.instance.StopAllWithFadeout(voiceOverList, 8.0f);
+        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 0.0f, 1.0f, 4.0f, 4.0f));
+        StartCoroutine(LoadSceneDelay("MainMenu", 8.0f));
+
     }
 
     // Used by Camera Behaviour to call this after zoom in animation finishes

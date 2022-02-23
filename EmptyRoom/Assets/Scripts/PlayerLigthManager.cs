@@ -30,6 +30,11 @@ public class PlayerLigthManager : MonoBehaviour
         targetRadius = lightRadiusLevels[level];
     }
 
+    public void SetTargetRadiusDirectly(float radius, float _radiusLerp = 0.05f) {
+        targetRadius = radius;
+        radiusLerp = _radiusLerp;
+    }
+
     void SetRadius(float targetRadius) {
         float radius = Mathf.Lerp(playerLight.pointLightOuterRadius, targetRadius, radiusLerp);
 

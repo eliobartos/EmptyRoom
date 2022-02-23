@@ -97,5 +97,11 @@ public class SubtitleManager : MonoBehaviour
             "Until we meet again.", 
             "I was never keeping you in here anyway.", 
             "You will be back. We all do." };
+
+        // When you loose
+        subtitlesDict[10] = new string[] { 
+            "You Lost 1", 
+            "You Lost 2", 
+            "You Lost 3"};
     }
 }
