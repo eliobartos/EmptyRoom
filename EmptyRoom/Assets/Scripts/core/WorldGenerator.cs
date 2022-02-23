@@ -254,12 +254,6 @@ class ArrowData {
         this.origin = origin;
         this.direction = direction;
     }
-
-    // public static ArrowData create_arrow(IntCoordinates origin, IntCoordinates target) {
-    //     var direction = new Vector2Substitute(target.x - origin.x, target.y - origin.y);
-    //     direction.normalize();
-    //     return new ArrowData(new Vector2Substitute(origin), direction);
-    // }
 }
 
 class GameWorldUtils {
