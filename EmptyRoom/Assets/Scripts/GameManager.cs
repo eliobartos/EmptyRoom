@@ -145,7 +145,10 @@ public class GameManager : NonPersistentSingleton<GameManager>
         for (int i = 0; i < n; i++) {
             // Call Game World Utils
             IntCoordinates playerPosition = new IntCoordinates(Mathf.RoundToInt(playerTransform.position.x), Mathf.RoundToInt(playerTransform.position.y));
-            ArrowData nextArrow = GameWorldUtils.generate_arrow(worldStages[ballsCollected], playerPosition, GameObjectsToIntCoordinates(balls), minArrowDistanceToPlayer, maxArrowDistanceToPlayer);
+            ArrowData nextArrow = GameWorldUtils.generate_arrow(
+                worldStages[ballsCollected], playerPosition, GameObjectsToIntCoordinates(balls),
+                min_distance_to_player: minArrowDistanceToPlayer,
+                max_distance_to_player: maxArrowDistanceToPlayer);
 
             // Convert coordinates to real object
             PlaceableObject ArrowObject = new PlaceableObject(_arrowPrefab, PlaceableObjectType.Arrow, $"Arrow {i}", nextArrow.origin.x, nextArrow.origin.y, Quaternion.FromToRotation(Vector3.left, new Vector3(nextArrow.direction.x, nextArrow.direction.y, 0)));

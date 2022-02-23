@@ -262,6 +262,8 @@ class ArrowData {
 
 class GameWorldUtils {
 
+    private const double PRECISION_TOLERANCE = 0.001;
+
     public static List<IntCoordinates> get_passable_cells_as_list(int[,] world_stage) {
         var width = world_stage.GetLength(0);
         var height = world_stage.GetLength(1);
@@ -277,7 +279,30 @@ class GameWorldUtils {
         return free_cells;
     }
 
-    public static ArrowData generate_arrow(int[, ] world_stage, IntCoordinates player_position, List<IntCoordinates> targets, float min_distance_to_player=1,float max_distance_to_player=7, Int32? seed = null, int nr_retries=20){
+    private class PlacementRequirement {
+        public readonly Func<IntCoordinates, bool> requirement;
+        PlacementRequirement(Func<IntCoordinates, bool> requirement) {
+            this.requirement = requirement;
+        }
+
+        public static PlacementRequirement from_obtacles(List<IntCoordinates> obstacles, double? min_distance=null, double? max_distance=null){
+            Func<IntCoordinates, bool> requirement = coord => {
+                foreach (var obstacle in obstacles) {
+                    var distance = coord.distance_to_other(obstacle);
+                    if (min_distance.HasValue && (distance < min_distance.Value)) {
+                        return false;
+                    }
+                    if (max_distance.HasValue && (distance > max_distance.Value)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            return new PlacementRequirement(requirement);
+        }
+    }
+
+    private static IntCoordinates place_an_object_with_requirements(int[,] world_stage, List<PlacementRequirement> placement_requirements, Int32? seed = null) {
         Random rand_gen;
         if (seed.HasValue) {
             rand_gen = new Random(seed.Value);
@@ -285,19 +310,45 @@ class GameWorldUtils {
             rand_gen = new Random();
         }
 
-        var random_target = new Vector2Substitute(targets[rand_gen.Next() % targets.Count]);
-
         var passable_cells = get_passable_cells_as_list(world_stage);
-        for (int retry = 0; retry < nr_retries; retry++) {
-            var origin = passable_cells[rand_gen.Next() % passable_cells.Count];
-            var distance_to_player = (new Vector2Substitute(player_position.x - origin.x, player_position.y - origin.y)).magnitude();
-            var is_good_choice = ((distance_to_player > min_distance_to_player) & (distance_to_player < max_distance_to_player));
-            if  (is_good_choice || retry == nr_retries - 1) {
-                var direction = new Vector2Substitute(random_target.x - origin.x, random_target.y - origin.y);
-                direction.normalize();
-                return new ArrowData(origin, direction);
+
+        foreach (var placement_requirement in placement_requirements) {
+            var filtered = passable_cells.Where(placement_requirement.requirement).ToList();
+            if (filtered.Count == 0) {
+                break;
+            }
+            passable_cells = filtered;
+        }
+        return passable_cells[rand_gen.Next() % passable_cells.Count];
+    }
+
+    public static ArrowData generate_arrow(int[, ] world_stage, IntCoordinates player_position, List<IntCoordinates> targets, List<IntCoordinates> objects_to_avoid = null,
+                                           double min_distance_to_player=3, double max_distance_to_player=7, double min_distance_to_targets=1,
+                                           Int32? seed = null, int nr_retries=20){
+        objects_to_avoid = objects_to_avoid ?? new List<IntCoordinates>();
+        var player_position_list = new List<IntCoordinates>() {player_position};
+        var placement_requirements = new List<PlacementRequirement>() {
+            PlacementRequirement.from_obtacles(player_position_list, min_distance: PRECISION_TOLERANCE),
+            PlacementRequirement.from_obtacles(objects_to_avoid, min_distance: PRECISION_TOLERANCE),
+            PlacementRequirement.from_obtacles(targets, min_distance: PRECISION_TOLERANCE),
+            PlacementRequirement.from_obtacles(player_position_list, min_distance: min_distance_to_player),
+            PlacementRequirement.from_obtacles(targets, min_distance: min_distance_to_targets),
+            PlacementRequirement.from_obtacles(player_position_list, max_distance: max_distance_to_player),
+        };
+        var origin = place_an_object_with_requirements(world_stage, placement_requirements);
+
+        var min_target = targets.First();
+        var min_distance = origin.distance_to_other(min_target);
+        for (int index = 1; index < targets.Count; index++) {
+            var current_distance = origin.distance_to_other(targets[index]);
+            if (current_distance < min_distance) {
+                min_target = targets[index];
+                min_distance = current_distance;
             }
         }
-        return null;
+
+        var direction = new Vector2Substitute(min_target.x - origin.x, min_target.y - origin.y);
+        direction.normalize();
+        return new ArrowData(origin, direction);
     }
 }
