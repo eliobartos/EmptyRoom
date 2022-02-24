@@ -9,6 +9,8 @@ namespace world_generation
     {
         static void Main(string[] args)
         {
+            test_place_objects();
+            return;
             test_world_generation();
             return;
             test_arrow_placement();
@@ -73,6 +75,25 @@ namespace world_generation
             foreach (var r in wg.rewards) {
                 Console.WriteLine($"({r.x}, {r.y})");
             }
+        }
+        private static void test_place_objects(Int32 seed=31) {
+            var _min_distance_between_objects = 3;
+            var rand_gen = new Random(seed);
+            for (int round = 0; round < 10; round++) {
+                var wg = new GameWorld();
+                wg.generate_world(rand_gen.Next());
+                foreach (var stage in wg.stages) {
+                    var placed_objects = GameWorldUtils.find_space_for_n_objects(stage, 5, min_distance_between_objects: _min_distance_between_objects);
+                    for (int first_index = 0; first_index < placed_objects.Count; first_index ++) {
+                        var first_object = placed_objects[first_index];
+                        Assert.True(stage[first_object.x, first_object.y] == GameWorld.CELL_MARK_PASSABLE);
+                        for (int second_index = first_index + 1; second_index < placed_objects.Count; second_index++) {
+                            Assert.True(first_object.distance_to_other(placed_objects[second_index]) >= _min_distance_between_objects);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Sucessfully placed objects!");
         }
     }
 }
