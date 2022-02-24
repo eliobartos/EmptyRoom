@@ -440,9 +440,10 @@ MonoBehaviour:
   voiceOverList:
   - Voiceover1
   - Voiceover2
+  ballIncreaseSanityAmount: 20
   ballsCollected: 0
-  currentSanity: 120
-  maxSanity: 120
+  currentSanity: 30
+  maxSanity: 30
   lowSanityPct: 0.2
   sanityBar: {fileID: 1346455450}
   balls: []

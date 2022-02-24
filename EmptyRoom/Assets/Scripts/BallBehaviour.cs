@@ -15,6 +15,8 @@ public class BallBehaviour : MonoBehaviour
             GameManager.instance.BallCollected();
 
             AudioManager.instance.ForcePlay("PickUp");
+
+            GameManager.instance.increaseSanity(GameManager.instance.ballIncreaseSanityAmount);
         }
 
         

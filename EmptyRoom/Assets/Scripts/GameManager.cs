@@ -28,6 +28,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int thirdMusicBallsNeeded = 7;
     public float FadeInOutTime = 1.0f;
     public string[] voiceOverList;
+    public float ballIncreaseSanityAmount = 20.0f;
 
     // Player Variables
     [Header("Player Variables")]
@@ -272,6 +273,13 @@ public class GameManager : NonPersistentSingleton<GameManager>
         } else if(ballsCollected == thirdMusicBallsNeeded) {
             AudioManager.instance.StopWithFadeout("Theme2", FadeInOutTime);
             AudioManager.instance.StartWithFadeIn("Theme3", FadeInOutTime, FadeInOutTime);
+        }
+    }
+
+    public void increaseSanity(float amount) {
+        currentSanity += amount;
+        if(currentSanity > maxSanity) {
+            currentSanity = maxSanity;
         }
     }
 
