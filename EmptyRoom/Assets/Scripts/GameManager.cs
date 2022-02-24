@@ -20,7 +20,8 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int maxArrowDistanceToPlayer = 10;
     [SerializeField] private bool onlyUpdateNonVisibleObject=true;
     public List<double> percolationStages;
-    
+    public float enemyGenerationPct = 0.3f;
+
 
     [Header("Sound Variables")]
     public int secondMusicBallsNeeded = 4;
@@ -42,6 +43,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     // Keep Track of objects
     public List<GameObject> balls;
     List<GameObject> arrows;
+    List<GameObject> enemies;
 
     // References to other objects
     [SerializeField] private GridManager gridManager;
@@ -56,6 +58,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [Header("Prefabs")]
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private GameObject _arrowPrefab;
+    [SerializeField] private GameObject _enemyPrefab;
 
     List<int[,]> worldStages;
 
@@ -63,6 +66,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Initialise object containers
         arrows = new List<GameObject>();
+        enemies = new List<GameObject>();
 
         // Set up gameplayer
         sanityBar.SetUp(maxSanity);
@@ -128,8 +132,16 @@ public class GameManager : NonPersistentSingleton<GameManager>
         // Show Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected);
 
+        // Generate Enemy 
+        float rUnif = Random.value;
+        Debug.Log(rUnif);
+        if(rUnif < enemyGenerationPct) {
+            GenerateEnemy();
+        }
+
         // End the level
         if(ballsCollected == maxBallsOnLevel) {
+            DestroyGameObjects(enemies, false);
             LevelWon();
             return;
         }
@@ -234,6 +246,18 @@ public class GameManager : NonPersistentSingleton<GameManager>
         StartCoroutine(ChangeImageAlphaAnim(transitionImage, 0.0f, 1.0f, 4.0f, 4.0f));
         StartCoroutine(LoadSceneDelay("MainMenu", 8.0f));
 
+    }
+
+    void GenerateEnemy() {
+        int x = Random.Range(0, levelWidth + 1);
+        int y = Random.Range(0, levelHeigth + 1);
+        Vector3 startPosition = new Vector3(x, y, 0);
+
+        var enemy = (GameObject)Instantiate(_enemyPrefab, startPosition, Quaternion.identity);
+        var enemyBehaviourComp = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviourComp.Init(3, 5);
+
+        enemies.Add(enemy);
     }
 
     // Used by Camera Behaviour to call this after zoom in animation finishes
