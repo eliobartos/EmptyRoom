@@ -9,6 +9,8 @@ namespace world_generation
     {
         static void Main(string[] args)
         {
+            test_player_object_placement();
+            return;
             test_reward_placement();
             return;
             test_objects_placement();
@@ -60,7 +62,7 @@ namespace world_generation
             var rand_gen = new Random(seed);
             var wg = new GameWorld();
             wg.generate_world();
-            wg._generate_rewards(4, rand_gen);
+            wg._generate_rewards(4, rand_gen, 10);
 
             IntCoordinates player_position = new IntCoordinates(wg.width / 2, wg.height / 2);
             var arrow = GameWorldUtils.generate_arrow(wg.stages.Last(), player_position, wg.rewards);
@@ -124,6 +126,24 @@ namespace world_generation
 
             result_dict.Add("interacting_not_placed_fraction", 1.0 * (nr_objects - interacting_objects.Count) / nr_objects);
             return result_dict;
+        }
+
+        private static void test_player_object_placement(Int32 seed=44) {
+            var min_distance = 5;
+            var nr_rounds = 100;
+            var player_position = new IntCoordinates(10, 10);
+            var nr_objects_to_place = 25;
+            for (var round = 0; round < nr_rounds; round++) {
+                var wg = new GameWorld();
+                wg.generate_world(seed);
+                var stage = wg.stages.Last();
+
+                var placed_objects = GameWorldUtils.find_space_for_n_objects(stage, nr_objects_to_place, player_position: player_position, min_distance_to_player: min_distance, seed: seed);
+                foreach (var o in placed_objects) {
+                    Assert.True(o.distance_to_other(player_position) >= min_distance);
+                }
+            }
+            Console.WriteLine("Succsfully placed object!");
         }
         private static void test_objects_placement(Int32 seed=31) {
             var min_distance_list = new List<int> () {5};

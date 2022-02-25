@@ -411,7 +411,7 @@ class GameWorldUtils {
         obstacles = obstacles ?? new List<IntCoordinates>();
         var player_position_list = new List<IntCoordinates>();
         if (player_position != null) {
-            player_position_list.Append(player_position);
+            player_position_list.Add(player_position);
         }
 
         var coordinates_to_return = new List<IntCoordinates>();
