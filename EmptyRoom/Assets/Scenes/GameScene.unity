@@ -419,31 +419,32 @@ MonoBehaviour:
   levelWidth: 40
   levelHeigth: 40
   maxBallsOnLevel: 9
-  arrowsPerLevel: 00000000000000000200000003000000040000000500000006000000070000000800000000000000
+  arrowsPerLevel: 00000000000000000100000002000000030000000400000005000000060000000700000000000000
   minArrowDistanceToPlayer: 5
   maxArrowDistanceToPlayer: 20
   onlyUpdateNonVisibleObject: 1
+  prefered_rewards_distance: 10
   percolationStages:
   - 1
-  - 0.9
-  - 0.84
-  - 0.8
-  - 0.75
-  - 0.73
+  - 0.82
+  - 0.77
+  - 0.74
+  - 0.7
   - 0.68
-  - 0.65
+  - 0.66
+  - 0.64
   - 0.63
-  enemyGenerationPct: 0.6
+  enemyGenerationPct: 0.7
   secondMusicBallsNeeded: 4
   thirdMusicBallsNeeded: 7
   FadeInOutTime: 1
   voiceOverList:
   - Voiceover1
   - Voiceover2
-  ballIncreaseSanityAmount: 20
+  ballIncreaseSanityAmount: 8
   ballsCollected: 0
-  currentSanity: 200
-  maxSanity: 200
+  currentSanity: 120
+  maxSanity: 40
   lowSanityPct: 0.2
   sanityBar: {fileID: 1346455450}
   balls: []
@@ -466,7 +467,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491950646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1326.0564, y: 667.45166, z: -372.72012}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -542,7 +543,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 3.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -618,7 +619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetZoom: 3.5
   zoomLerpPct: 0.1
-  startDelayTime: 3
+  startDelayTime: 1
   startZoomSpeed: 0.1
 --- !u!1 &801099878
 GameObject:
@@ -734,7 +735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subtitleUI: {fileID: 1680261298}
-  subtitleDuration: 3
+  subtitleDuration: 6
 --- !u!4 &947686789
 Transform:
   m_ObjectHideFlags: 0
@@ -1410,12 +1411,12 @@ MonoBehaviour:
   radiusLerp: 0.1
   lightRadiusLevels:
   - 0
-  - 7
-  - 6.2
-  - 5.5
-  - 5
-  - 4.5
+  - 6
+  - 5.2
+  - 4.7
+  - 4.3
   - 4
+  - 3.8
   - 3.6
   - 3.2
   - 0

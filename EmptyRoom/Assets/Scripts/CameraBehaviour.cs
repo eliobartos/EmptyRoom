@@ -23,8 +23,8 @@ public class CameraBehaviour : MonoBehaviour
         this.transform.position = new Vector3((levelWidth - 0.5f) / 2.0f, (levelHeight - 0.5f) / 2.0f, this.transform.position.z);
 
         // Set the beginning zoom out
-        startingOrtographicZoom = Mathf.Min(levelHeight, levelWidth) / 4.0f;
-        Camera.main.orthographicSize = startingOrtographicZoom;
+        //startingOrtographicZoom = Mathf.Min(levelHeight, levelWidth) / 4.0f;
+        //Camera.main.orthographicSize = startingOrtographicZoom;
 
         StartCoroutine("StartingZoomIn");
     }

@@ -95,8 +95,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         StartCoroutine(ChangeImageAlphaAnim(transitionImage, 1.0f, 0.0f, 1.0f));
 
         // Start Subtitles
-        subtitleManager.DisplaySubtitle(ballsCollected, 3.0f);
-
+        subtitleManager.DisplaySubtitle(ballsCollected, 1.5f);
     }
 
     void Update() {
@@ -117,7 +116,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
             globalLight.gameObject.SetActive(false);
 
             // Add Fixed Walkable Decorations
-            AddDecorationsToWorld(10);
+            AddDecorationsToWorld(20);
 
         } else if(ballsCollected == 9) {
             globalLight.gameObject.SetActive(true);
@@ -162,7 +161,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     private void AddDecorationsToWorld(int n) {
         
         IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
-        List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], 10, 3.0, min_distance_to_player: 10.0f, player_position: playerCoordinates);
+        List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 15.0f, player_position: playerCoordinates);
         var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab);
         decorations = gridManager.AddPlaceableObjects(decorationsList);
     }
@@ -295,7 +294,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     public void increaseSanity(float amount) {
-        currentSanity += amount;
+
+        if(ballsCollected != maxBallsOnLevel) {
+            currentSanity += amount * ballsCollected;
+        }
+        
         if(currentSanity > maxSanity) {
             currentSanity = maxSanity;
         }
