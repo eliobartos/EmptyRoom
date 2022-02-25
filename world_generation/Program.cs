@@ -9,7 +9,7 @@ namespace world_generation
     {
         static void Main(string[] args)
         {
-            test_place_objects();
+            test_objects_placement();
             return;
             test_world_generation();
             return;
@@ -76,24 +76,88 @@ namespace world_generation
                 Console.WriteLine($"({r.x}, {r.y})");
             }
         }
-        private static void test_place_objects(Int32 seed=31) {
-            var _min_distance_between_objects = 3;
+
+        private static Dictionary<String, double> place_objects_on_world_stage(int [, ] game_world, int nr_objects, int minimal_distance_between_objects, Int32 seed) {
+            var result_dict = new Dictionary<String, double> ();
+
+            var nr_passable_cells = GameWorldUtils.get_passable_cells_as_list(game_world).Count;
+            var non_interacting_objects = GameWorldUtils.find_space_for_n_objects(
+                game_world, nr_objects, min_distance_between_objects: minimal_distance_between_objects, seed: seed);
+            Assert.True(non_interacting_objects.Count <= nr_passable_cells);
+
+            int nr_non_interacting_well_places_pairs = 0;
+            for (int first_index = 0; first_index < non_interacting_objects.Count; first_index ++) {
+                var first_object = non_interacting_objects[first_index];
+                Assert.True(game_world[first_object.x, first_object.y] == GameWorld.CELL_MARK_PASSABLE);
+
+                for (int second_index = first_index + 1; second_index < non_interacting_objects.Count; second_index++) {
+                    var distance = first_object.distance_to_other(non_interacting_objects[second_index]);
+                    Assert.True(distance > 0.001);
+                    if (distance >= minimal_distance_between_objects) {
+                        nr_non_interacting_well_places_pairs += 1;
+                    }
+                }
+            }
+            result_dict.Add(
+                "non_interacting_well_placed_fraction",
+                 1.0 * nr_non_interacting_well_places_pairs / (non_interacting_objects.Count * (non_interacting_objects.Count - 1) / 2));
+            result_dict.Add("non_interacting_not_placed_fraction", 1.0 * (nr_objects - non_interacting_objects.Count) / nr_objects);
+
+            var interacting_objects = GameWorldUtils.find_space_for_n_objects(game_world, nr_objects, keep_world_connected: true, seed: seed);
+            Assert.True(interacting_objects.Count <= nr_passable_cells);
+            var original_cluster_size = GameWorldUtils.mark_cluster_and_return_size(
+                GameWorldUtils.copy_as_matrix_of_occupied_or_passable(game_world),
+                GameWorldUtils.find_one_with_mark(game_world, GameWorld.CELL_MARK_PASSABLE),
+                GameWorld.CELL_MARK_UNUSED_AFTER_THIS + 221);
+            var matrix = GameWorldUtils.copy_as_matrix_of_occupied_or_passable(game_world);
+            foreach (var o in interacting_objects) {
+                matrix[o.x, o.y] = GameWorld.CELL_MARK_OCCUPIED;
+            }
+            if (interacting_objects.Count < original_cluster_size) {
+                var new_cluster_size = GameWorldUtils.mark_cluster_and_return_size(
+                    matrix, GameWorldUtils.find_one_with_mark(matrix, GameWorld.CELL_MARK_PASSABLE), GameWorld.CELL_MARK_UNUSED_AFTER_THIS + 1124);
+                Assert.True(original_cluster_size == (new_cluster_size + interacting_objects.Count));
+            }
+
+            for (var first_index = 0; first_index < interacting_objects.Count; first_index++) {
+                var first_object = interacting_objects[first_index];
+                for (var second_index = first_index + 1; second_index < interacting_objects.Count; second_index++) {
+                    var second_object = interacting_objects[second_index];
+                    Assert.True((first_object.x != second_object.x) || (first_object.y != second_object.y));
+                }
+            }
+
+            result_dict.Add("interacting_not_placed_fraction", 1.0 * (nr_objects - interacting_objects.Count) / nr_objects);
+            return result_dict;
+        }
+        private static void test_objects_placement(Int32 seed=31) {
+            var min_distance_list = new List<int> () {5};
+            var nr_objects_to_place_list = new List<int> () {50, 100, 500};
             var rand_gen = new Random(seed);
-            for (int round = 0; round < 10; round++) {
-                var wg = new GameWorld();
-                wg.generate_world(rand_gen.Next());
-                foreach (var stage in wg.stages) {
-                    var placed_objects = GameWorldUtils.find_space_for_n_objects(stage, 5, min_distance_between_objects: _min_distance_between_objects);
-                    for (int first_index = 0; first_index < placed_objects.Count; first_index ++) {
-                        var first_object = placed_objects[first_index];
-                        Assert.True(stage[first_object.x, first_object.y] == GameWorld.CELL_MARK_PASSABLE);
-                        for (int second_index = first_index + 1; second_index < placed_objects.Count; second_index++) {
-                            Assert.True(first_object.distance_to_other(placed_objects[second_index]) >= _min_distance_between_objects);
+            int nr_rounds = 1;
+            foreach (int nr_to_place in nr_objects_to_place_list) {
+                foreach (int min_distance in min_distance_list) {
+                    var collected_results = new Dictionary<String, List<double>> ();
+                    for (int round = 0; round < nr_rounds; round++) {
+                        var wg = new GameWorld();
+                        wg.generate_world(rand_gen.Next());
+                        foreach (var stage in wg.stages) {
+                            var result_dict = place_objects_on_world_stage(stage, nr_to_place, min_distance, seed);
+
+                            var _non_int_wpf = result_dict["non_interacting_well_placed_fraction"];
+                            var _non_int_npf = result_dict["non_interacting_not_placed_fraction"];
+                            var _int_npf = result_dict["interacting_not_placed_fraction"];
+                            var message = $"Placing {nr_to_place} objects at min distance {min_distance}...\n";
+                            message += $"Failed to place {_non_int_npf:N2} non-interacting objects. Of those placed, {_non_int_wpf:N2} are placed well.\n";
+                            message += $"Failed to place {_int_npf:N2} interacting objects.";
+                            if ((_non_int_npf > 0.2)  || (_non_int_wpf < 0.8) || (_int_npf > 0.3)) {
+                                Console.WriteLine(message);
+                            }
                         }
                     }
                 }
             }
-            Console.WriteLine("Sucessfully placed objects!");
+            Console.WriteLine("Sucessfully placed interacting and non interacting objects!");
         }
     }
 }
