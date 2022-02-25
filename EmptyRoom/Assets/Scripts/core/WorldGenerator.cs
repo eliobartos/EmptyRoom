@@ -42,27 +42,29 @@ class GameWorld {
     public int height;
     public int nr_rewards;
     public List<double> percolation_stages_probs;
+    public double prefered_rewards_distance;
     public double[,] score_matrix;
     public List<int[,]> stages;
 
     public List<IntCoordinates> rewards;
-    private void _init_block(List<double> percolation_stages_probs, int width, int height, int nr_rewards) {
+    private void _init_block(List<double> percolation_stages_probs, int width, int height, int nr_rewards, double prefered_rewards_distance) {
         this.width = width;
         this.height = height;
         this.nr_rewards = nr_rewards;
         this.percolation_stages_probs = percolation_stages_probs;
+        this.prefered_rewards_distance = prefered_rewards_distance;
     }
-    public GameWorld(List<double> percolation_stages_probs, int width=25, int height=25, int nr_rewards=9) {
-        _init_block(percolation_stages_probs, width, height, nr_rewards);
+    public GameWorld(List<double> percolation_stages_probs, int width=25, int height=25, int nr_rewards=9, double prefered_rewards_distance=10) {
+        _init_block(percolation_stages_probs, width, height, nr_rewards, prefered_rewards_distance);
     }
 
-    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_percolation_prob=0.64, int percolation_steps=5) {
+    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_percolation_prob=0.64, int percolation_steps=5, double prefered_rewards_distance=10) {
         var stages_probs = new List<double>();
         double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
         for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
             stages_probs.Add(starting_percolation_prob + step_nr * threshold_step);
         }
-        _init_block(stages_probs, width, height, nr_rewards);
+        _init_block(stages_probs, width, height, nr_rewards, prefered_rewards_distance);
     }
 
     private void _generate_matrix(Random rand_gen) {
@@ -124,7 +126,7 @@ class GameWorld {
         }
     }
 
-    public void _generate_rewards(int nr_rewards, Random rand_generator, int prefered_distance=10) {
+    public void _generate_rewards(int nr_rewards, Random rand_generator, double prefered_distance) {
         rewards = GameWorldUtils.find_space_for_n_objects(stages.Last(), nr_rewards, prefered_distance);
     }
 
@@ -132,7 +134,7 @@ class GameWorld {
         var rand_gen = (seed.HasValue) ? new Random(seed.Value) : new Random();
         _generate_matrix(rand_gen);
         _generate_stages();
-        _generate_rewards(nr_rewards, rand_gen);
+        _generate_rewards(nr_rewards, rand_gen, prefered_rewards_distance);
     }
 
     public void _place_rewards_on_stages() {
