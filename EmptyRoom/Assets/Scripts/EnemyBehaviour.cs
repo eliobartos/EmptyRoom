@@ -43,13 +43,7 @@ public class EnemyBehaviour : MonoBehaviour
         currentIndex = 1;
         currentPoint = movementPoints[currentIndex];
         
-        foreach(Vector3 v in movementPoints) {
-            Debug.Log(v);
-        }
-        // Pick Up Where it is placed
-        // Add 1 or 2 more points
-        // Start Going from one to another, take care of flip
-        // Collide with player
+      
     }
 
     public void Update() {
@@ -90,7 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
             playerMovement.canMove = false;
             StartCoroutine(EnableMovement(playerMovement, 2.0f));
 
-            GameManager.instance.currentSanity -= sanityReduction;
+            GameManager.instance.ReduceSanity(sanityReduction);
             // Play sounds
             // Add some animation
         }

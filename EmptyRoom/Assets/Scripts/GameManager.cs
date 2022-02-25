@@ -100,7 +100,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     void Update() {
         ReduceSanityOverTime();
-        sanityBar.UpdateBar(currentSanity);
 
         if(currentSanity <= 0.0f && gameOver == false) {
             LevelLost();
@@ -142,9 +141,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         subtitleManager.DisplaySubtitle(ballsCollected);
 
         // Generate Enemy
-        float rUnif = Random.value;
-        Debug.Log(rUnif);
-        if(rUnif < enemyGenerationPct) {
+        if(Random.value < enemyGenerationPct) {
             GenerateEnemy();
         }
 
@@ -210,12 +207,18 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     void ReduceSanityOverTime() {
         currentSanity -= Time.deltaTime;
+        sanityBar.UpdateBar(currentSanity);
 
         if(currentSanity/maxSanity < lowSanityPct) {
             AudioManager.instance.StartWithFadeIn("Sanity", currentSanity);
         } else {
             AudioManager.instance.Stop("Sanity");
         }
+    }
+
+    public void ReduceSanity(float amount) {
+        currentSanity -= amount;
+        sanityBar.UpdateBarWithEffect(currentSanity);
     }
 
     // Convert list of coordinats into meaningful game object to be placed by gridManager
