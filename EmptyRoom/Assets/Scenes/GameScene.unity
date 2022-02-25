@@ -442,8 +442,8 @@ MonoBehaviour:
   - Voiceover2
   ballIncreaseSanityAmount: 20
   ballsCollected: 0
-  currentSanity: 30
-  maxSanity: 30
+  currentSanity: 200
+  maxSanity: 200
   lowSanityPct: 0.2
   sanityBar: {fileID: 1346455450}
   balls: []
@@ -457,6 +457,7 @@ MonoBehaviour:
   _ballPrefab: {fileID: 6176914305965870109, guid: d74bf79fe10b34665a224473d938dd2b, type: 3}
   _arrowPrefab: {fileID: 7069783252629890430, guid: bd6d230c478274d58a6a732622193251, type: 3}
   _enemyPrefab: {fileID: 6729044763032936164, guid: 40702261d7e3b44999c5cf5157f4fa94, type: 3}
+  _decorationPrefab: {fileID: 8792233152906687473, guid: b34550359727c4289be51af750e3cdfc, type: 3}
 --- !u!4 &491950648
 Transform:
   m_ObjectHideFlags: 0
@@ -615,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9510aab389104c12a0ea5220ea255b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetZoom: 4
+  targetZoom: 3.5
   zoomLerpPct: 0.1
   startDelayTime: 3
   startZoomSpeed: 0.1

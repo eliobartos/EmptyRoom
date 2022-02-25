@@ -45,6 +45,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public List<GameObject> balls;
     List<GameObject> arrows;
     List<GameObject> enemies;
+    List<GameObject> decorations;
 
     // References to other objects
     [SerializeField] private GridManager gridManager;
@@ -60,6 +61,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GameObject _ballPrefab;
     [SerializeField] private GameObject _arrowPrefab;
     [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _decorationPrefab;
 
     List<int[,]> worldStages;
 
@@ -81,9 +83,11 @@ public class GameManager : NonPersistentSingleton<GameManager>
         gameWorld.generate_world();
 
         worldStages = gameWorld.stages;
-        var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
 
         gridManager.GenerateGrid(worldStages[0]);
+        
+        // Add Balls
+        var ballsList = CoordinatesToPlaceableObject(gameWorld.rewards, PlaceableObjectType.Ball, "Ball", _ballPrefab);
         balls = gridManager.AddPlaceableObjects(ballsList);
 
         // Start scene transition
@@ -110,6 +114,10 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         if(ballsCollected == 1) {
             globalLight.gameObject.SetActive(false);
+
+            // Add Fixed Walkable Decorations
+            AddDecorationsToWorld(10);
+
         } else if(ballsCollected == 9) {
             globalLight.gameObject.SetActive(true);
         }
@@ -143,10 +151,19 @@ public class GameManager : NonPersistentSingleton<GameManager>
         // End the level
         if(ballsCollected == maxBallsOnLevel) {
             DestroyGameObjects(enemies, false);
+            DestroyGameObjects(decorations, false);
             LevelWon();
             return;
         }
 
+    }
+
+    private void AddDecorationsToWorld(int n) {
+        
+        IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
+        List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], 10, 3.0, min_distance_to_player: 10.0f, player_position: playerCoordinates);
+        var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab);
+        decorations = gridManager.AddPlaceableObjects(decorationsList);
     }
 
     private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {

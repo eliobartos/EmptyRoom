@@ -148,6 +148,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 4457547144873855494, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4457547144873855494, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4457547144873855494, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4457547144873855495, guid: b3d225c2b5e8f497c8891b71d4329052, type: 3}
       propertyPath: m_RootOrder
       value: 0
