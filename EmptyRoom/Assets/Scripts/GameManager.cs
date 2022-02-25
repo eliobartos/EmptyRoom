@@ -168,7 +168,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         
         IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
         List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates);
-        var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab);
+        var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab, true);
         decorations = gridManager.AddPlaceableObjects(decorationsList);
     }
 
@@ -239,13 +239,20 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     // Convert list of coordinats into meaningful game object to be placed by gridManager
-    private List<PlaceableObject> CoordinatesToPlaceableObject(List<IntCoordinates> corList, PlaceableObjectType type, string name, GameObject prefab) {
+    private List<PlaceableObject> CoordinatesToPlaceableObject(List<IntCoordinates> corList, PlaceableObjectType type, string name, GameObject prefab, bool addOffset = false) {
 
         List<PlaceableObject> plObjList = new List<PlaceableObject>();
 
         foreach(IntCoordinates cor in corList) {
-            PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.x, cor.y);
-            plObjList.Add(plObj);
+            if(addOffset == false) {
+                PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.x, cor.y);
+                plObjList.Add(plObj);
+            } else {
+                PlaceableObject plObj = new PlaceableObject(prefab, type, name, cor.x, cor.y, (Random.value - 0.5f) * 0.8f, (Random.value - 0.5f) * 0.8f);
+                plObjList.Add(plObj);
+            }
+            
+            
         }
 
         return plObjList;
