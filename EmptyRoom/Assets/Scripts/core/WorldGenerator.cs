@@ -74,27 +74,6 @@ class GameWorld {
         }
     }
 
-    private int _mark_cluster_and_return_size(int[,] matrix, IntCoordinates start, int mark) {
-        if (matrix[start.x, start.y] == CELL_MARK_OCCUPIED) {
-            return 0;
-        }
-        var cluster_size = 1;
-        var to_visit = new Queue<IntCoordinates>();
-        to_visit.Enqueue(start);
-        matrix[start.x, start.y] = mark;
-        while (to_visit.Count > 0) {
-            var current = to_visit.Dequeue();
-            var neighbors = current.neighbors(width, height);
-            foreach (var n in neighbors) {
-                if (matrix[n.x, n.y] == CELL_MARK_PASSABLE){
-                    matrix[n.x, n.y] = mark;
-                    to_visit.Enqueue(n);
-                    cluster_size += 1;
-                }
-            }
-        }
-        return cluster_size;
-    }
 
     private int _count_marks(int[,] matrix, int mark) {
         int count = 0;
@@ -108,16 +87,6 @@ class GameWorld {
         return count;
     }
 
-    private IntCoordinates _find_one(int[,] matrix, int mark) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (matrix[x, y] == mark) {
-                    return new IntCoordinates(x, y);
-                }
-            }
-        }
-        return null;
-    }
     private void _polish_matrix(int[,] matrix) {
         int cluster_mark = CELL_MARK_UNUSED_AFTER_THIS + 1;
         int total_cluster_size = 0;
@@ -125,8 +94,8 @@ class GameWorld {
         int largest_cluster_mark = CELL_MARK_PLACEHOLDER;
         int nr_passable_cells = _count_marks(matrix, CELL_MARK_PASSABLE);
         while (largest_cluster_size  < nr_passable_cells - total_cluster_size) {
-            IntCoordinates start = _find_one(matrix, CELL_MARK_PASSABLE);
-            var cluster_size = _mark_cluster_and_return_size(matrix, start, cluster_mark);
+            IntCoordinates start = GameWorldUtils.find_one_with_mark(matrix, CELL_MARK_PASSABLE);
+            var cluster_size = GameWorldUtils.mark_cluster_and_return_size(matrix, start, cluster_mark);
             total_cluster_size += cluster_size;
             if (cluster_size > largest_cluster_size) {
                 largest_cluster_size = cluster_size;
@@ -226,6 +195,17 @@ class GameWorld {
             Console.Write("-");
         }
     }
+
+    public static void _print(int[, ] world_matrix, List<IntCoordinates> objects, int mark = CELL_MARK_REWARD) {
+        var matrix = GameWorldUtils.copy_as_matrix_of_occupied_or_passable(world_matrix);
+        foreach (var o in objects) {
+            matrix[o.x, o.y] = mark;
+        }
+        print_world_matrix_to_console(matrix);
+    }
+    public static void _cluster(int[, ] world_matrix, List<IntCoordinates> objects) {
+        _print(world_matrix, objects, mark: CELL_MARK_OCCUPIED);
+    }
 }
 
 class Vector2Substitute{
@@ -264,6 +244,43 @@ class GameWorldUtils {
 
     private const double PRECISION_TOLERANCE = 0.001;
 
+    internal static IntCoordinates find_one_with_mark(int[,] matrix, int mark) {
+        int width = matrix.GetLength(0);
+        int height = matrix.GetLength(1);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (matrix[x, y] == mark) {
+                    return new IntCoordinates(x, y);
+                }
+            }
+        }
+        return null;
+    }
+
+    internal static int mark_cluster_and_return_size(int[,] matrix, IntCoordinates start, int mark) {
+        var width = matrix.GetLength(0);
+        var height = matrix.GetLength(1);
+        if (matrix[start.x, start.y] == GameWorld.CELL_MARK_OCCUPIED) {
+            return 0;
+        }
+        var cluster_size = 1;
+        var to_visit = new Queue<IntCoordinates>();
+        to_visit.Enqueue(start);
+        matrix[start.x, start.y] = mark;
+        while (to_visit.Count > 0) {
+            var current = to_visit.Dequeue();
+            var neighbors = current.neighbors(width, height);
+            foreach (var n in neighbors) {
+                if (matrix[n.x, n.y] == GameWorld.CELL_MARK_PASSABLE){
+                    matrix[n.x, n.y] = mark;
+                    to_visit.Enqueue(n);
+                    cluster_size += 1;
+                }
+            }
+        }
+        return cluster_size;
+    }
+
     public static List<IntCoordinates> get_passable_cells_as_list(int[,] world_stage) {
         var width = world_stage.GetLength(0);
         var height = world_stage.GetLength(1);
@@ -278,6 +295,44 @@ class GameWorldUtils {
         }
         return free_cells;
     }
+
+    public static int[, ] copy_as_matrix_of_occupied_or_passable(int[, ] game_world) {
+        var width = game_world.GetLength(0);
+        var height = game_world.GetLength(1);
+        var matrix = new int[width, height];
+        for (var x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                if (game_world[x, y] == GameWorld.CELL_MARK_PASSABLE) {
+                    matrix[x, y] = GameWorld.CELL_MARK_PASSABLE;
+                } else {
+                    matrix[x, y] = GameWorld.CELL_MARK_OCCUPIED;
+                }
+            }
+        }
+        return matrix;
+    }
+
+    public static bool is_tile_separates_cluster(int[, ] game_world, IntCoordinates tile, int? cluster_size=null) {
+        if (game_world[tile.x, tile.y] != GameWorld.CELL_MARK_PASSABLE) {
+            return false;
+        }
+        var width = game_world.GetLength(0);
+        var height = game_world.GetLength(1);
+        var passable_neighbors = tile.neighbors(width, height).Where(n => game_world[n.x, n.y] == GameWorld.CELL_MARK_PASSABLE).ToList();
+        if (passable_neighbors.Count == 0) {
+            return false;
+        }
+
+        var _cluster_mark = GameWorld.CELL_MARK_UNUSED_AFTER_THIS + 142;
+        cluster_size = cluster_size ?? mark_cluster_and_return_size(copy_as_matrix_of_occupied_or_passable(game_world), tile, _cluster_mark);
+
+        var matrix = copy_as_matrix_of_occupied_or_passable(game_world);
+        matrix[tile.x, tile.y] = GameWorld.CELL_MARK_OCCUPIED;
+        var new_size = GameWorldUtils.mark_cluster_and_return_size(matrix, passable_neighbors.First(), _cluster_mark);
+
+        return (new_size != cluster_size - 1);
+    }
+
 
     private class PlacementRequirement {
         public readonly Func<IntCoordinates, bool> requirement;
@@ -300,26 +355,43 @@ class GameWorldUtils {
             };
             return new PlacementRequirement(requirement);
         }
+
+        public static PlacementRequirement keep_world_connected(int[, ] game_world, List<IntCoordinates> obstacles) {
+            Func<IntCoordinates, bool> requirement = coord => {
+                var matrix = copy_as_matrix_of_occupied_or_passable(game_world);
+                foreach (var obstacle in obstacles) {
+                    matrix[obstacle.x, obstacle.y] = GameWorld.CELL_MARK_OCCUPIED;
+                }
+                return (!GameWorldUtils.is_tile_separates_cluster(matrix, coord));
+            };
+            return new PlacementRequirement(requirement);
+        }
     }
 
-    private static IntCoordinates place_while_fulfilling_requirements(int[,] world_stage, List<PlacementRequirement> placement_requirements, Int32? seed = null) {
+    private static IntCoordinates place_while_fulfilling_requirements(List<IntCoordinates> available_cells, List<PlacementRequirement> optional_requirements,
+                                                                      List<PlacementRequirement> necessary_requirements = null, Int32? seed = null) {
         Random rand_gen;
         if (seed.HasValue) {
             rand_gen = new Random(seed.Value);
         } else {
             rand_gen = new Random();
         }
-
-        var passable_cells = get_passable_cells_as_list(world_stage);
-
-        foreach (var placement_requirement in placement_requirements) {
-            var filtered = passable_cells.Where(placement_requirement.requirement).ToList();
+        if (necessary_requirements != null) {
+            foreach (var placement_requirement in necessary_requirements) {
+                available_cells = available_cells.Where(placement_requirement.requirement).ToList();
+            }
+            if (available_cells.Count == 0) {
+                return null;
+            }
+        }
+        foreach (var placement_requirement in optional_requirements) {
+            var filtered = available_cells.Where(placement_requirement.requirement).ToList();
             if (filtered.Count == 0) {
                 break;
             }
-            passable_cells = filtered;
+            available_cells = filtered;
         }
-        return passable_cells[rand_gen.Next() % passable_cells.Count];
+        return available_cells[rand_gen.Next() % available_cells.Count];
     }
 
     public static ArrowData generate_arrow(int[, ] world_stage, IntCoordinates player_position, List<IntCoordinates> targets, List<IntCoordinates> objects_to_avoid = null,
@@ -335,7 +407,7 @@ class GameWorldUtils {
             PlacementRequirement.from_obtacles(targets, min_distance: min_distance_to_targets),
             PlacementRequirement.from_obtacles(player_position_list, max_distance: max_distance_to_player),
         };
-        var origin = place_while_fulfilling_requirements(world_stage, placement_requirements);
+        var origin = place_while_fulfilling_requirements(GameWorldUtils.get_passable_cells_as_list(world_stage), placement_requirements);
 
         var min_target = targets.First();
         var min_distance = origin.distance_to_other(min_target);
@@ -354,22 +426,39 @@ class GameWorldUtils {
 
     public static List<IntCoordinates> find_space_for_n_objects(int[,] world_stage, int nr_objects, double min_distance_between_objects = PRECISION_TOLERANCE,
                                                                 List<IntCoordinates> obstacles=null, double min_distance_to_obstacles = PRECISION_TOLERANCE,
-                                                                IntCoordinates player_position=null, double min_distance_to_player=PRECISION_TOLERANCE) {
+                                                                IntCoordinates player_position=null, double min_distance_to_player=PRECISION_TOLERANCE,
+                                                                bool keep_world_connected=false, Int32? seed=null) {
         obstacles = obstacles ?? new List<IntCoordinates>();
         var player_position_list = new List<IntCoordinates>();
         if (player_position != null) {
             player_position_list.Append(player_position);
         }
+
         var coordinates_to_return = new List<IntCoordinates>();
-        var placement_requirements = new List<PlacementRequirement>() {
+        var cluser_blocking_coordinates = new List<IntCoordinates>();
+
+        var necessary_requirements = new List<PlacementRequirement>() {
+            PlacementRequirement.from_obtacles(coordinates_to_return, min_distance: PRECISION_TOLERANCE),
+            PlacementRequirement.from_obtacles(player_position_list, min_distance: PRECISION_TOLERANCE)
+        };
+        if (keep_world_connected) {
+            necessary_requirements.Add(
+                PlacementRequirement.keep_world_connected(world_stage, cluser_blocking_coordinates));
+        }
+
+        var optional_requirements = new List<PlacementRequirement>() {
             PlacementRequirement.from_obtacles(player_position_list, min_distance: min_distance_to_player),
             PlacementRequirement.from_obtacles(obstacles, min_distance: min_distance_to_obstacles),
             PlacementRequirement.from_obtacles(coordinates_to_return, min_distance: min_distance_between_objects)
         };
 
+        var available_cells = GameWorldUtils.get_passable_cells_as_list(world_stage);
         for (int object_index = 0; object_index < nr_objects; object_index++) {
-            var coord = place_while_fulfilling_requirements(world_stage, placement_requirements);
-            coordinates_to_return.Add(coord);
+            var coord = place_while_fulfilling_requirements(available_cells, optional_requirements, necessary_requirements: necessary_requirements, seed: seed);
+            if (coord != null) {
+                coordinates_to_return.Add(coord);
+                cluser_blocking_coordinates.Add(coord);
+            }
         }
         return coordinates_to_return;
     }
