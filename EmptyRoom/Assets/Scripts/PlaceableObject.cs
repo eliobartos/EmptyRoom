@@ -5,7 +5,8 @@ using UnityEngine;
 public enum PlaceableObjectType {
     Ball,
     Decoration,
-    Arrow
+    Arrow,
+    WorldText
 }
 
 

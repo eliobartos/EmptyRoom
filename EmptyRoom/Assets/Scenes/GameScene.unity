@@ -422,7 +422,7 @@ MonoBehaviour:
   maxBallsOnLevel: 9
   arrowsPerLevel: 00000000000000000100000002000000030000000400000005000000060000000700000000000000
   minArrowDistanceToPlayer: 5
-  maxArrowDistanceToPlayer: 20
+  maxArrowDistanceToPlayer: 30
   onlyUpdateNonVisibleObject: 1
   prefered_rewards_distance: 10
   percolationStages:
@@ -446,7 +446,7 @@ MonoBehaviour:
   ballsCollected: 0
   currentSanity: 60
   maxSanity: 60
-  lowSanityPct: 0.2
+  lowSanityPct: 0.35
   sanityBar: {fileID: 1346455450}
   balls: []
   gridManager: {fileID: 488991483}
@@ -460,6 +460,7 @@ MonoBehaviour:
   _arrowPrefab: {fileID: 7069783252629890430, guid: bd6d230c478274d58a6a732622193251, type: 3}
   _enemyPrefab: {fileID: 6729044763032936164, guid: 40702261d7e3b44999c5cf5157f4fa94, type: 3}
   _decorationPrefab: {fileID: 8792233152906687473, guid: b34550359727c4289be51af750e3cdfc, type: 3}
+  _worldTextPrefab: {fileID: 8481659809699533192, guid: 39d4e58480d224a51b55b821d2025b84, type: 3}
 --- !u!4 &491950648
 Transform:
   m_ObjectHideFlags: 0

@@ -47,6 +47,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     List<GameObject> arrows;
     List<GameObject> enemies;
     List<GameObject> decorations;
+    List<GameObject> worldText;
 
     // References to other objects
     [SerializeField] private GridManager gridManager;
@@ -63,6 +64,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [SerializeField] private GameObject _arrowPrefab;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _decorationPrefab;
+    [SerializeField] private GameObject _worldTextPrefab;
 
     List<int[,]> worldStages;
 
@@ -116,9 +118,12 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
             // Add Fixed Walkable Decorations
             AddDecorationsToWorld(20);
-
         } else if(ballsCollected == 9) {
             globalLight.gameObject.SetActive(true);
+        }
+
+        if(ballsCollected == 3) {
+            AddWorldTextToWorld(6);
         }
 
         // Reduce player light
@@ -161,6 +166,14 @@ public class GameManager : NonPersistentSingleton<GameManager>
         List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates);
         var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab);
         decorations = gridManager.AddPlaceableObjects(decorationsList);
+    }
+
+    private void AddWorldTextToWorld(int n) {
+        
+        IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
+        List<IntCoordinates> worldTextCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates, obstacles: GameObjectsToIntCoordinates(decorations));
+        var decorationsList = CoordinatesToPlaceableObject(worldTextCoord, PlaceableObjectType.WorldText, "World Text", _worldTextPrefab);
+        worldText = gridManager.AddPlaceableObjects(decorationsList);
     }
 
     private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {
