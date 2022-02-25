@@ -443,8 +443,8 @@ MonoBehaviour:
   - Voiceover2
   ballIncreaseSanityAmount: 8
   ballsCollected: 0
-  currentSanity: 120
-  maxSanity: 40
+  currentSanity: 60
+  maxSanity: 60
   lowSanityPct: 0.2
   sanityBar: {fileID: 1346455450}
   balls: []
