@@ -161,7 +161,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     private void AddDecorationsToWorld(int n) {
         
         IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
-        List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 15.0f, player_position: playerCoordinates);
+        List<IntCoordinates> decorationsCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates);
         var decorationsList = CoordinatesToPlaceableObject(decorationsCoord, PlaceableObjectType.Decoration, "Decoration", _decorationPrefab);
         decorations = gridManager.AddPlaceableObjects(decorationsList);
     }
