@@ -42,27 +42,29 @@ class GameWorld {
     public int height;
     public int nr_rewards;
     public List<double> percolation_stages_probs;
+    public double prefered_rewards_distance;
     public double[,] score_matrix;
     public List<int[,]> stages;
 
     public List<IntCoordinates> rewards;
-    private void _init_block(List<double> percolation_stages_probs, int width, int height, int nr_rewards) {
+    private void _init_block(List<double> percolation_stages_probs, int width, int height, int nr_rewards, double prefered_rewards_distance) {
         this.width = width;
         this.height = height;
         this.nr_rewards = nr_rewards;
         this.percolation_stages_probs = percolation_stages_probs;
+        this.prefered_rewards_distance = prefered_rewards_distance;
     }
-    public GameWorld(List<double> percolation_stages_probs, int width=25, int height=25, int nr_rewards=9) {
-        _init_block(percolation_stages_probs, width, height, nr_rewards);
+    public GameWorld(List<double> percolation_stages_probs, int width=25, int height=25, int nr_rewards=9, double prefered_rewards_distance=10) {
+        _init_block(percolation_stages_probs, width, height, nr_rewards, prefered_rewards_distance);
     }
 
-    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_percolation_prob=0.64, int percolation_steps=5) {
+    public GameWorld(int width=25, int height=25, int nr_rewards=9, double starting_percolation_prob=1.0, double final_percolation_prob=0.64, int percolation_steps=5, double prefered_rewards_distance=10) {
         var stages_probs = new List<double>();
         double threshold_step = (final_percolation_prob - starting_percolation_prob) / percolation_steps;
         for (int step_nr = 0; step_nr <= percolation_steps; step_nr++) {
             stages_probs.Add(starting_percolation_prob + step_nr * threshold_step);
         }
-        _init_block(stages_probs, width, height, nr_rewards);
+        _init_block(stages_probs, width, height, nr_rewards, prefered_rewards_distance);
     }
 
     private void _generate_matrix(Random rand_gen) {
@@ -124,37 +126,15 @@ class GameWorld {
         }
     }
 
-    public double compute_separation(List<IntCoordinates> rewards){
-        double total = 0;
-        for (int first = 0; first < rewards.Count; first++) {
-            for (int second = first + 1; second < rewards.Count; second++) {
-                total += rewards[first].distance_to_other(rewards[second]);
-            }
-        }
-        return total / rewards.Count;
-    }
-
-    public void _generate_rewards(int nr_rewards, Random rand_generator, int nr_retries=10) {
-        var free_cells = GameWorldUtils.get_passable_cells_as_list(stages.Last());
-
-        double best_separation = 0;
-        List<IntCoordinates> best_rewards = null;
-        for (int retry = 0; retry < nr_retries; retry++) {
-            var _random_rewards = free_cells.OrderBy(cell => rand_generator.Next()).Take(nr_rewards).ToList();
-            var separation = compute_separation(_random_rewards);
-            if (separation > best_separation) {
-                best_rewards = _random_rewards;
-                best_separation = separation;
-            }
-        }
-        rewards = best_rewards;
+    public void _generate_rewards(int nr_rewards, Random rand_generator, double prefered_distance) {
+        rewards = GameWorldUtils.find_space_for_n_objects(stages.Last(), nr_rewards, prefered_distance);
     }
 
     public void generate_world(Int32? seed=null) {
         var rand_gen = (seed.HasValue) ? new Random(seed.Value) : new Random();
         _generate_matrix(rand_gen);
         _generate_stages();
-        _generate_rewards(nr_rewards, rand_gen);
+        _generate_rewards(nr_rewards, rand_gen, prefered_rewards_distance);
     }
 
     public void _place_rewards_on_stages() {
@@ -334,7 +314,7 @@ class GameWorldUtils {
     }
 
 
-    private class PlacementRequirement {
+    internal class PlacementRequirement {
         public readonly Func<IntCoordinates, bool> requirement;
         PlacementRequirement(Func<IntCoordinates, bool> requirement) {
             this.requirement = requirement;
@@ -368,7 +348,7 @@ class GameWorldUtils {
         }
     }
 
-    private static IntCoordinates place_while_fulfilling_requirements(List<IntCoordinates> available_cells, List<PlacementRequirement> optional_requirements,
+    internal static IntCoordinates place_while_fulfilling_requirements(List<IntCoordinates> available_cells, List<PlacementRequirement> optional_requirements,
                                                                       List<PlacementRequirement> necessary_requirements = null, Int32? seed = null) {
         Random rand_gen;
         if (seed.HasValue) {

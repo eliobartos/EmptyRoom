@@ -19,6 +19,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public int minArrowDistanceToPlayer = 5;
     public int maxArrowDistanceToPlayer = 10;
     [SerializeField] private bool onlyUpdateNonVisibleObject=true;
+    [SerializeField] private double prefered_rewards_distance = 15;
     public List<double> percolationStages;
     public float enemyGenerationPct = 0.3f;
 
@@ -79,7 +80,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Generate world the world
         // var gameWorld = new GameWorld(levelWidth, levelHeigth, maxBallsOnLevel, percolation_steps: maxBallsOnLevel);
-        var gameWorld = new GameWorld(percolationStages, levelWidth, levelHeigth, maxBallsOnLevel);
+        var gameWorld = new GameWorld(percolationStages, levelWidth, levelHeigth, maxBallsOnLevel, prefered_rewards_distance: prefered_rewards_distance);
         gameWorld.generate_world();
 
         worldStages = gameWorld.stages;
@@ -131,7 +132,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         } else {
             gridManager.UpdateGrid(worldStages[ballsCollected], onlyUpdateNonVisibleObject);
         }
-        
+
 
         AddArrowsToWorld(arrowsPerLevel[ballsCollected], onlyUpdateNonVisibleObject);
 
@@ -141,7 +142,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         // Show Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected);
 
-        // Generate Enemy 
+        // Generate Enemy
         float rUnif = Random.value;
         Debug.Log(rUnif);
         if(rUnif < enemyGenerationPct) {
