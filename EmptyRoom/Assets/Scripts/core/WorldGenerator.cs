@@ -124,30 +124,8 @@ class GameWorld {
         }
     }
 
-    public double compute_separation(List<IntCoordinates> rewards){
-        double total = 0;
-        for (int first = 0; first < rewards.Count; first++) {
-            for (int second = first + 1; second < rewards.Count; second++) {
-                total += rewards[first].distance_to_other(rewards[second]);
-            }
-        }
-        return total / rewards.Count;
-    }
-
-    public void _generate_rewards(int nr_rewards, Random rand_generator, int nr_retries=10) {
-        var free_cells = GameWorldUtils.get_passable_cells_as_list(stages.Last());
-
-        double best_separation = 0;
-        List<IntCoordinates> best_rewards = null;
-        for (int retry = 0; retry < nr_retries; retry++) {
-            var _random_rewards = free_cells.OrderBy(cell => rand_generator.Next()).Take(nr_rewards).ToList();
-            var separation = compute_separation(_random_rewards);
-            if (separation > best_separation) {
-                best_rewards = _random_rewards;
-                best_separation = separation;
-            }
-        }
-        rewards = best_rewards;
+    public void _generate_rewards(int nr_rewards, Random rand_generator, int prefered_distance=10) {
+        rewards = GameWorldUtils.find_space_for_n_objects(stages.Last(), nr_rewards, prefered_distance);
     }
 
     public void generate_world(Int32? seed=null) {
@@ -334,7 +312,7 @@ class GameWorldUtils {
     }
 
 
-    private class PlacementRequirement {
+    internal class PlacementRequirement {
         public readonly Func<IntCoordinates, bool> requirement;
         PlacementRequirement(Func<IntCoordinates, bool> requirement) {
             this.requirement = requirement;
@@ -368,7 +346,7 @@ class GameWorldUtils {
         }
     }
 
-    private static IntCoordinates place_while_fulfilling_requirements(List<IntCoordinates> available_cells, List<PlacementRequirement> optional_requirements,
+    internal static IntCoordinates place_while_fulfilling_requirements(List<IntCoordinates> available_cells, List<PlacementRequirement> optional_requirements,
                                                                       List<PlacementRequirement> necessary_requirements = null, Int32? seed = null) {
         Random rand_gen;
         if (seed.HasValue) {
