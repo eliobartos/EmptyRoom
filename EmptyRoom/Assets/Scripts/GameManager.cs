@@ -116,14 +116,17 @@ public class GameManager : NonPersistentSingleton<GameManager>
         if(ballsCollected == 1) {
             globalLight.gameObject.SetActive(false);
 
-            // Add Fixed Walkable Decorations
-            AddDecorationsToWorld(20);
-        } else if(ballsCollected == 9) {
+        } else if(ballsCollected == maxBallsOnLevel) {
             globalLight.gameObject.SetActive(true);
         }
 
         if(ballsCollected == 3) {
-            AddWorldTextToWorld(6);
+            // Add Fixed Walkable Decorations
+            AddDecorationsToWorld(20);
+        }
+
+        if(ballsCollected == 5) {
+            AddWorldTextToWorld(10);
         }
 
         // Reduce player light
@@ -154,6 +157,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         if(ballsCollected == maxBallsOnLevel) {
             DestroyGameObjects(enemies, false);
             DestroyGameObjects(decorations, false);
+            DestroyGameObjects(worldText, false);
             LevelWon();
             return;
         }

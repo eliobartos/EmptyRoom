@@ -20,7 +20,22 @@ public class WorldTextBehaviour : MonoBehaviour
     }
 
     void SetUpArray() {
-        textArray = new string[] { "Fear Me", "Pain is here", "T is is real", "Alone", "Sca y", "domi ation obsessed w th?? my fever", "happy thoughts"  };
+        textArray = new string[] { 
+            "Ar  you sc red?",
+            "Pain", 
+            "T is is real", 
+            "Alone", 
+            "domi ation obsessed with?? my fever", 
+            "happy thoughts",
+            "up or down",
+            "come here",
+            "this way... maybe",
+            "just let it go..",
+            "feel",
+            "stop, stop",
+            "noo ooo!",
+            ":D"
+        };
     }
 
     
