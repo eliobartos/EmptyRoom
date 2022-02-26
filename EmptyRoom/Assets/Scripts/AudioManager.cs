@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 public class AudioManager : NonPersistentSingleton<AudioManager>
 {
     public Sound[] sounds;
+    private int[] randomOrderIndex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    private int currentIndex = 0;
 
     protected override void Awake() {
         base.Awake();
@@ -22,6 +24,10 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
 
     void Start() {
         Play("Theme1");
+
+        // Create Random Order
+        AudioManager.Shuffle(randomOrderIndex);
+       
     }
 
     public void Play(string name) {
@@ -75,8 +81,8 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
         }
 
         // Else choose one randomly and start playing it
-        int chosenSoundIndex = UnityEngine.Random.Range(0, names.Length);
-        Play(names[chosenSoundIndex]);
+        Play(names[randomOrderIndex[currentIndex]]);
+        currentIndex++;
 
 
     }
@@ -121,6 +127,20 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
             yield return null;
         }
         yield break;
+    }
+
+
+    public static void Shuffle<T> (T[] array)
+    {
+        var rng = new System.Random();
+        int n = array.Length;
+        while (n > 1) 
+        {
+            int k = rng.Next(n--);
+            T temp = array[n];
+            array[n] = array[k];
+            array[k] = temp;
+        }
     }
  }
 

@@ -442,6 +442,14 @@ MonoBehaviour:
   voiceOverList:
   - Voiceover1
   - Voiceover2
+  - Voiceover3
+  - Voiceover4
+  - Voiceover5
+  - Voiceover6
+  - Voiceover7
+  - Voiceover8
+  - Voiceover9
+  - Voiceover10
   ballIncreaseSanityAmount: 5
   ballsCollected: 0
   currentSanity: 60
@@ -761,12 +769,52 @@ MonoBehaviour:
   - name: Voiceover1
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: f17b217a2f31145e2a7e56a8231f5e24, type: 3}
+    clip: {fileID: 8300000, guid: 07106bdbd0cfc432182b29f32402cd8e, type: 3}
     source: {fileID: 0}
   - name: Voiceover2
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: a9d27f921474940818287190e4fc610e, type: 3}
+    clip: {fileID: 8300000, guid: 9b565b63fc4f842a0836d64d1fb5875b, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover3
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: e6a934e6c0b2d47c692e1d3c658b55d7, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover4
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: 2921eb38e51724f819a2f8c912cc6de7, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover5
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: e2c2a6fe27e2e4e89b37a4c1702bd33d, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover6
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover7
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover8
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover9
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    source: {fileID: 0}
+  - name: Voiceover10
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
     source: {fileID: 0}
 --- !u!4 &801099880
 Transform:
