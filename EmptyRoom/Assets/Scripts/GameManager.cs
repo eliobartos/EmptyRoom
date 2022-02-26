@@ -174,10 +174,28 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     private void AddWorldTextToWorld(int n) {
         
+        //IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
+        //List<IntCoordinates> worldTextCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates, obstacles: GameObjectsToIntCoordinates(decorations));
+        //var worldTextList = CoordinatesToPlaceableObject(worldTextCoord, PlaceableObjectType.WorldText, "World Text", _worldTextPrefab);
+        //worldText = gridManager.AddPlaceableObjects(worldTextList);
+
+        // New try
         IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
-        List<IntCoordinates> worldTextCoord = GameWorldUtils.find_space_for_n_objects(worldStages[8], n, 4.0, min_distance_to_player: 10.0f, player_position: playerCoordinates, obstacles: GameObjectsToIntCoordinates(decorations));
-        var decorationsList = CoordinatesToPlaceableObject(worldTextCoord, PlaceableObjectType.WorldText, "World Text", _worldTextPrefab);
-        worldText = gridManager.AddPlaceableObjects(decorationsList);
+        var tileRectangles = GameWorldUtils.find_n_free_tile_rectangles(worldStages[8], 3, 2, n, GameObjectsToIntCoordinates(decorations), playerCoordinates, 10.0f);
+        Debug.Log("Returned Rectangles: " + tileRectangles.Count);
+
+        List<PlaceableObject> plObjs = new List<PlaceableObject>();
+
+        foreach(var tileRectangle in tileRectangles) {
+            var offset = tileRectangle.get_offset_from_bottom_left_to_center();
+
+            PlaceableObject plObj = new PlaceableObject(_worldTextPrefab, PlaceableObjectType.WorldText, "World Text", tileRectangle.bottom_left_corner.x, tileRectangle.bottom_left_corner.y, offset.x, offset.y);
+            plObjs.Add(plObj);
+        }
+
+        worldText = gridManager.AddPlaceableObjects(plObjs);
+
+
     }
 
     private void AddArrowsToWorld(int n, bool destroyPrevious = true, bool doNotDestroyVisibleArrows=false) {
@@ -259,6 +277,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     private List<IntCoordinates> GameObjectsToIntCoordinates(List<GameObject> gameObjects) {
+
+        if(gameObjects == null) return null;
+
         List<IntCoordinates> objectsCor = new List<IntCoordinates>();
 
         foreach(GameObject gameObject in gameObjects) {

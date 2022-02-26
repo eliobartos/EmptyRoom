@@ -17,6 +17,10 @@ public class WorldTextBehaviour : MonoBehaviour
         int index = Random.Range(0, textArray.Length);
         textUI.text = textArray[index];
         textUI.transform.localRotation = Quaternion.Euler(0, 0, Random.Range(-40, 40));
+
+        var newColor = textUI.color;
+        newColor.a = Random.Range(0.3f, 0.9f);
+        textUI.color = newColor;
     }
 
     void SetUpArray() {
