@@ -234,6 +234,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     private void DestroyGameObjects(List<GameObject> gameObjects, bool doNotDestroyVisibleObjects=false) {
+
+        if(gameObjects == null) return;
+
         var playerPosition = playerMovement.transform.position;
         foreach(GameObject gameObject in gameObjects) {
             if (doNotDestroyVisibleObjects) {
