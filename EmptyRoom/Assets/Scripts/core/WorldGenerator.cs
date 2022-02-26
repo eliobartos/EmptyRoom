@@ -500,6 +500,12 @@ class GameWorldUtils {
             }
             return final_distance;
         }
+
+        public Vector2Substitute get_offset_from_bottom_left_to_center() {
+            float offset_x = (1.0f * width) / 2;
+            float offset_y = (1.0f * height) / 2;
+            return new Vector2Substitute(offset_x, offset_y);
+        }
     }
 
     public static List<TileRectangle> find_n_free_tile_rectangles(int[, ] game_world, int rectangel_width, int rectangle_height, int nr_rectangles_to_find,
@@ -532,7 +538,6 @@ class GameWorldUtils {
             }
             return true;
         };
-
 
         Func<IntCoordinates, bool> player_requirement = coord => {
             var rectange = new TileRectangle(coord, rectangel_width, rectangle_height);
