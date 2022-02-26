@@ -82,6 +82,8 @@ public class EnemyBehaviour : MonoBehaviour
 
             var playerMovement = other.gameObject.GetComponent<PlayerMovement>();
             playerMovement.canMove = false;
+
+            AudioManager.instance.ForcePlay("EnemyHit");
             StartCoroutine(EnableMovement(playerMovement, 2.0f));
 
             GameManager.instance.ReduceSanity(sanityReduction);

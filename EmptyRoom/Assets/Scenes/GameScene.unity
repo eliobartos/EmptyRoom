@@ -816,6 +816,11 @@ MonoBehaviour:
     loop: 0
     clip: {fileID: 8300000, guid: 69cb8b8e307a44c3ca65a947ee23cf57, type: 3}
     source: {fileID: 0}
+  - name: EnemyHit
+    volume: 1
+    loop: 0
+    clip: {fileID: 8300000, guid: f50d6a4508ac0447bac19efd97b70b0a, type: 3}
+    source: {fileID: 0}
 --- !u!4 &801099880
 Transform:
   m_ObjectHideFlags: 0
