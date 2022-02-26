@@ -99,7 +99,7 @@ PlayerSettings:
   xboxEnableFitness: 0
   visibleInBackground: 1
   allowFullscreenSwitch: 1
-  fullscreenMode: 3
+  fullscreenMode: 1
   xboxSpeechDB: 0
   xboxEnableHeadOrientation: 0
   xboxEnableGuest: 0
@@ -270,7 +270,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 7f67268ee03424488941ad3cb6ea7579, type: 3}
+      m_Icon: {fileID: 2800000, guid: 72c918af3a13f4ec1a340514bfb3d256, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
