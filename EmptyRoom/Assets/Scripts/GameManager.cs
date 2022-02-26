@@ -42,6 +42,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     [Header("References to Objects")]
     [SerializeField] private Bar sanityBar;
     [SerializeField] private Text score;
+    [SerializeField] private AlwaysRotate spiralRotation;
 
     // Keep Track of objects
     public List<GameObject> balls;
@@ -146,6 +147,9 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Handle Sound Changes
         HandleSoundChanges();
+
+        // Spiral rotation speed
+        HandleSpiralRotationSpeed();
 
         // Show Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected);
@@ -325,6 +329,14 @@ public class GameManager : NonPersistentSingleton<GameManager>
         enemyBehaviourComp.Init(3, 5);
 
         enemies.Add(enemy);
+    }
+
+    void HandleSpiralRotationSpeed() {
+        if(ballsCollected == secondMusicBallsNeeded) {
+            spiralRotation.SetRotationSpeed(160.0f);
+        } else if(ballsCollected == thirdMusicBallsNeeded) {
+            spiralRotation.SetRotationSpeed(320.0f);
+        }
     }
 
     // Used by Camera Behaviour to call this after zoom in animation finishes
