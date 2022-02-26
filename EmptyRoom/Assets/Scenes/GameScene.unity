@@ -799,22 +799,22 @@ MonoBehaviour:
   - name: Voiceover7
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    clip: {fileID: 8300000, guid: e166ecd7249934979ba849eafd0d9fe6, type: 3}
     source: {fileID: 0}
   - name: Voiceover8
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    clip: {fileID: 8300000, guid: c9da8433056f34cbeaf608f4406a57fb, type: 3}
     source: {fileID: 0}
   - name: Voiceover9
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    clip: {fileID: 8300000, guid: 27dab0dc8243c4293ae7f478803d7839, type: 3}
     source: {fileID: 0}
   - name: Voiceover10
     volume: 1
     loop: 0
-    clip: {fileID: 8300000, guid: f47c259313ba24104a5da4ff8d960579, type: 3}
+    clip: {fileID: 8300000, guid: 69cb8b8e307a44c3ca65a947ee23cf57, type: 3}
     source: {fileID: 0}
 --- !u!4 &801099880
 Transform:
