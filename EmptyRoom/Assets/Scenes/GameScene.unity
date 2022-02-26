@@ -456,6 +456,7 @@ MonoBehaviour:
   lowSanityPct: 0.35
   sanityBar: {fileID: 1346455450}
   score: {fileID: 636017007}
+  spiralRotation: {fileID: 1349865489}
   balls: []
   gridManager: {fileID: 488991483}
   playerLightManager: {fileID: 1838255097}
