@@ -98,6 +98,12 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
         // Start Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected, 1.5f);
+
+        GenerateEnemy();
+        GenerateEnemy();
+        GenerateEnemy();
+        GenerateEnemy();
+        GenerateEnemy();
     }
 
     void Update() {

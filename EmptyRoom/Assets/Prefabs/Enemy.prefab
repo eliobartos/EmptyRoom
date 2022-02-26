@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1344199734}
   - component: {fileID: 1984440280}
   - component: {fileID: 1984440279}
+  - component: {fileID: 5727027276223588579}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 1783782221
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 7f67268ee03424488941ad3cb6ea7579, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b0a686e4c8c2249f697101415e978940, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,15 +118,15 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: 0.22857088, y: 0.030991077}
-  - {x: 0.4719658, y: -0.4638996}
-  - {x: 0.22320938, y: -0.7032509}
-  - {x: -0.2267952, y: -0.670846}
+  - {x: 0.5032501, y: -0.530931}
+  - {x: 0.24108505, y: -0.74793816}
+  - {x: -0.2804222, y: -0.6887207}
   - {x: -0.39126587, y: -0.5659776}
   - {x: -0.37577057, y: 0.06973028}
   - {x: -0.5350876, y: 0.62758064}
   - {x: -0.049007416, y: 0.7056372}
-  - {x: 0.14780045, y: 0.26694036}
-  - {x: 0.22080427, y: 0.015495777}
+  - {x: 0.1880188, y: 0.2758782}
+  - {x: 0.22080427, y: 0.011026859}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -4902,3 +4903,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &5727027276223588579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729044763032936164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
