@@ -10,6 +10,7 @@ public class EnemyBehaviour : MonoBehaviour
     int currentIndex;
     bool facingRigth = true;
     public float sanityReduction = 10.0f;
+    Coroutine enableMovementCo;
 
     public float enemySpeed = 6.0f;
 
@@ -83,12 +84,24 @@ public class EnemyBehaviour : MonoBehaviour
             var playerMovement = other.gameObject.GetComponent<PlayerMovement>();
             playerMovement.canMove = false;
 
-            AudioManager.instance.ForcePlay("EnemyHit");
-            StartCoroutine(EnableMovement(playerMovement, 2.0f));
+            AudioManager.instance.Play("EnemyHit");
+
+            var cameraShake = Camera.main.GetComponent<CameraShake>();
+            if(cameraShake.enabled == true) {
+                cameraShake.enabled = false;
+                if(enableMovementCo != null) {
+                    StopCoroutine(enableMovementCo);
+                }
+                
+                cameraShake.enabled = true;
+                enableMovementCo = StartCoroutine(EnableMovement(playerMovement, 2.0f));
+            } {
+                cameraShake.enabled = true;
+                enableMovementCo = StartCoroutine(EnableMovement(playerMovement, 2.0f));
+            }
 
             GameManager.instance.ReduceSanity(sanityReduction);
-            // Play sounds
-            // Add some animation
+
         }
 
         
@@ -97,5 +110,12 @@ public class EnemyBehaviour : MonoBehaviour
     IEnumerator EnableMovement(PlayerMovement playerMovement, float delay) {
         yield return new WaitForSeconds(delay);
         playerMovement.canMove = true;
+        Camera.main.GetComponent<CameraShake>().enabled = false;
+    }
+
+    IEnumerator FadeOutForcePlay() {
+        AudioManager.instance.StopWithFadeout("EnemyHit", 0.1f);
+        yield return new WaitForSeconds(0.1f);
+        AudioManager.instance.Play("EnemyHit");
     }
 }
