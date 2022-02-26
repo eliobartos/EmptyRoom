@@ -41,6 +41,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     // UI Objects
     [Header("References to Objects")]
     [SerializeField] private Bar sanityBar;
+    [SerializeField] private Text score;
 
     // Keep Track of objects
     public List<GameObject> balls;
@@ -113,6 +114,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     public void BallCollected() {
         ballsCollected += 1;
 
+        score.text = ballsCollected.ToString() + "/9";
         if(ballsCollected == 1) {
             globalLight.gameObject.SetActive(false);
 
