@@ -25,21 +25,36 @@ public class WorldTextBehaviour : MonoBehaviour
 
     void SetUpArray() {
         textArray = new string[] { 
-            "Ar  you sc red?",
-            "Pain", 
-            "T is is real", 
-            "Alone", 
-            "domi ation obsessed with?? my fever", 
-            "happy thoughts",
-            "up or down",
-            "come here",
-            "this way... maybe",
-            "just let it go..",
-            "feel",
-            "stop, stop",
-            "noo ooo!",
-            ":D"
+            "happy thoughts happy thoughts happy!!!!",
+            "the music art with a a a lot of a planet a lot",
+            "ask about loneliness, the emotions relate but how",
+            "keep moving remember",
+            "Don't let them get you!",
+            "you hear you hear? you hear",
+            "Farwell...",
+            "ever nevermore",
+            "I've been here before you",
+            "HELP",
+            "all LIES",
+            "voice IS LYING",
+            "shiny shiny shiny",
+            "trust the dont trust the arrows",
+            "where is the rabbit",
+            "stop STOP?!",
+            "They are behind you",
+            "NEVER close your eyes",
+            "with a little?? bit more dreaaaam",
+            "must collect shinies",
+            "never collect shinies",
+            "NO ONE SEES",
+            "they KNOW when you CRY",
+            "PAIN GOES NOT AWAY",
+            "you read VERY WELL",
+            "please make it stop",
+            "RUNRUNRNUNRN",
+            "Do not go gentle into that good night"
         };
+
     }
 
     

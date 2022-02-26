@@ -182,7 +182,6 @@ public class GameManager : NonPersistentSingleton<GameManager>
         // New try
         IntCoordinates playerCoordinates = new IntCoordinates(Mathf.RoundToInt(playerMovement.transform.position.x), Mathf.RoundToInt(playerMovement.transform.position.y));
         var tileRectangles = GameWorldUtils.find_n_free_tile_rectangles(worldStages[8], 3, 2, n, GameObjectsToIntCoordinates(decorations), playerCoordinates, 10.0f);
-        Debug.Log("Returned Rectangles: " + tileRectangles.Count);
 
         List<PlaceableObject> plObjs = new List<PlaceableObject>();
 
@@ -333,11 +332,17 @@ public class GameManager : NonPersistentSingleton<GameManager>
 
     private void HandleSoundChanges() {
         if(ballsCollected == secondMusicBallsNeeded) {
-            AudioManager.instance.StopWithFadeout("Theme1", FadeInOutTime);
-            AudioManager.instance.StartWithFadeIn("Theme2", FadeInOutTime, FadeInOutTime);
+            //AudioManager.instance.StopWithFadeout("Theme1", FadeInOutTime);
+            //AudioManager.instance.StartWithFadeIn("Theme2", FadeInOutTime, FadeInOutTime);
+            AudioManager.instance.SetVolume("Theme1", 0.0f);
+            AudioManager.instance.SetVolume("Theme2", 1.0f);
+            AudioManager.instance.SetVolume("Theme3", 0.0f);
         } else if(ballsCollected == thirdMusicBallsNeeded) {
-            AudioManager.instance.StopWithFadeout("Theme2", FadeInOutTime);
-            AudioManager.instance.StartWithFadeIn("Theme3", FadeInOutTime, FadeInOutTime);
+            //AudioManager.instance.StopWithFadeout("Theme2", FadeInOutTime);
+            //AudioManager.instance.StartWithFadeIn("Theme3", FadeInOutTime, FadeInOutTime);
+            AudioManager.instance.SetVolume("Theme1", 0.0f);
+            AudioManager.instance.SetVolume("Theme2", 0.0f);
+            AudioManager.instance.SetVolume("Theme3", 1.0f);
         }
     }
 

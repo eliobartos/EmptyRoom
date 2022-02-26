@@ -24,6 +24,10 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
 
     void Start() {
         Play("Theme1");
+        Play("Theme2");
+        SetVolume("Theme2", 0.0f);
+        Play("Theme3");
+        SetVolume("Theme3", 0.0f);
 
         // Create Random Order
         AudioManager.Shuffle(randomOrderIndex);
@@ -68,6 +72,11 @@ public class AudioManager : NonPersistentSingleton<AudioManager>
         }
 
     }
+
+    public void SetVolume(string name, float pct) {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        s.source.volume = pct * s.volume;
+    } 
 
     public void PlayOneOf(string[] names) {
 

@@ -50,11 +50,11 @@ public class SubtitleManager : MonoBehaviour
 
         subtitlesDict[0] = new string[] { 
             "Remember: The room is empty. The room is empty. There is nothing in here.", 
-            "Glad to see you here again. Remember, there is nothing in this room except you.", 
-            "Nothing exists here. Nothing can exist here. The room has always been empty." };
+            "Glad to see you here again. Don't forget, there's nothing here but you!", 
+            "This room has always been empty. Nothing can persist here." };
 
         subtitlesDict[1] = new string[] { 
-            "I know you might think you're seeing things around you, but it's all just an illusion.", 
+            "Whatever you think you're seeing around you is just an illusion.", 
             "This will change nothing. The room is empty, and it will remain so.", 
             "Nothing is in here to get you. You are perfectly safe." };
 
@@ -64,44 +64,44 @@ public class SubtitleManager : MonoBehaviour
             "These whispers aren't real. They have never existed." };
 
         subtitlesDict[3] = new string[] { 
-            "You should trust your mind, not your eyes.", 
+            "You shouldn't trust your eyes, trust me instead.", 
             "Remember - the room is empty.", 
             "No one is talking about you. No one is laughing at you." };
 
         subtitlesDict[4] = new string[] { 
             "What are you hoping to achieve?", 
-            "It's useless anyway.", 
+            "It's pointless anyway.", 
             "Nothing is trying to hurt you here." };
 
         subtitlesDict[5] = new string[] { 
             "Honestly, you should just let go.", 
-            "This won't bring anything or anyone back. This won't bring you back.", 
-            "Don't you think they all know what's on your mind?" };
+            "This won't bring anyone back. This won't bring you back.", 
+            "You think I don't know what's on your mind?" };
 
         subtitlesDict[6] = new string[] { 
-            "It's all in your head anyway.", 
+            "It's all in your head.", 
             "Nothing is seen - everything has been seen.", 
             "Hear that sound? You do, right? I know you do." };
 
         subtitlesDict[7] = new string[] { 
-            "No one is following you, and you know that.", 
+            "No one is following you. You know that, right?", 
             "What a remarkable empty room this is.", 
             "You can leave any time you wish. You know the way out." };
 
         subtitlesDict[8] = new string[] { 
-            "You know this will change nothing.", 
-            "You will only end up hurting yourself more.", 
-            "It will be easier if you just close your eyes and give up." };
+            "This will change nothing!", 
+            "Stop! Or you'll end up hurting yourself!", 
+            "Just give up already! You won't get rid of me!" };
 
         subtitlesDict[9] = new string[] { 
-            "Until we meet again.", 
-            "I was never keeping you in here anyway.", 
-            "You will be back. We all do." };
+            "None of this was real anyway. We knew that from the start.", 
+            "Unreal experience. We should do it again.", 
+            "You can't escape me. I am you after all." };
 
         // When you loose
         subtitlesDict[10] = new string[] { 
-            "You Lost 1", 
-            "You Lost 2", 
-            "You Lost 3"};
+            "This is what happens when you try to escape.", 
+            "Guess you aren't good enough.", 
+            "It's not the walls that are keeping you here. They aren't real anyway."};
     }
 }

@@ -537,7 +537,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -766,17 +766,17 @@ MonoBehaviour:
   - name: Theme1
     volume: 0.1
     loop: 1
-    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    clip: {fileID: 8300000, guid: cecd4b9f53467401685e61454a2aaabd, type: 3}
     source: {fileID: 0}
   - name: Theme2
     volume: 0.1
     loop: 1
-    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    clip: {fileID: 8300000, guid: 56d35b45f26ce47a99f45418b414689d, type: 3}
     source: {fileID: 0}
   - name: Theme3
     volume: 0.1
     loop: 1
-    clip: {fileID: 8300000, guid: 1a8187d706ec64ef88d8aa9b4646149c, type: 3}
+    clip: {fileID: 8300000, guid: 88545e4d6cff44d9e938092ecbcef0ab, type: 3}
     source: {fileID: 0}
   - name: Sanity
     volume: 1
