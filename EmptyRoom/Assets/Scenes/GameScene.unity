@@ -419,7 +419,7 @@ MonoBehaviour:
   levelWidth: 42
   levelHeigth: 42
   maxBallsOnLevel: 9
-  arrowsPerLevel: 00000000000000000100000002000000030000000400000005000000060000000700000000000000
+  arrowsPerLevel: 00000000000000000100000003000000040000000500000006000000060000000700000000000000
   minArrowDistanceToPlayer: 5
   maxArrowDistanceToPlayer: 30
   onlyUpdateNonVisibleObject: 1
@@ -434,7 +434,7 @@ MonoBehaviour:
   - 0.66
   - 0.64
   - 0.63
-  enemyGenerationPct: 0.8
+  enemyGenerationPct: 0.7
   secondMusicBallsNeeded: 4
   thirdMusicBallsNeeded: 7
   FadeInOutTime: 1
@@ -449,10 +449,10 @@ MonoBehaviour:
   - Voiceover8
   - Voiceover9
   - Voiceover10
-  ballIncreaseSanityAmount: 5
+  ballIncreaseSanityAmount: 5.5
   ballsCollected: 0
-  currentSanity: 60
-  maxSanity: 60
+  currentSanity: 70
+  maxSanity: 70
   lowSanityPct: 0.35
   sanityBar: {fileID: 1346455450}
   score: {fileID: 636017007}
