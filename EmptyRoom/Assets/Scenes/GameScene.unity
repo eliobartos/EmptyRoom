@@ -434,7 +434,7 @@ MonoBehaviour:
   - 0.66
   - 0.64
   - 0.63
-  enemyGenerationPct: 0.7
+  enemyGenerationPct: 0.75
   secondMusicBallsNeeded: 4
   thirdMusicBallsNeeded: 7
   FadeInOutTime: 1
@@ -449,10 +449,10 @@ MonoBehaviour:
   - Voiceover8
   - Voiceover9
   - Voiceover10
-  ballIncreaseSanityAmount: 5.5
+  ballIncreaseSanityAmount: 5
   ballsCollected: 0
-  currentSanity: 70
-  maxSanity: 70
+  currentSanity: 63
+  maxSanity: 63
   lowSanityPct: 0.35
   sanityBar: {fileID: 1346455450}
   score: {fileID: 636017007}
