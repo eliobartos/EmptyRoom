@@ -316,7 +316,7 @@ class GameWorldUtils {
 
     internal class PlacementRequirement {
         public readonly Func<IntCoordinates, bool> requirement;
-        PlacementRequirement(Func<IntCoordinates, bool> requirement) {
+        public PlacementRequirement(Func<IntCoordinates, bool> requirement) {
             this.requirement = requirement;
         }
 
@@ -441,5 +441,130 @@ class GameWorldUtils {
             }
         }
         return coordinates_to_return;
+    }
+
+    public class TileRectangle {
+        public IntCoordinates bottom_left_corner;
+        public int width;
+        public int height;
+
+        public TileRectangle(IntCoordinates bottom_left_corner, int width, int height) {
+            this.bottom_left_corner = bottom_left_corner;
+            this.width = width;
+            this.height = height;
+        }
+        public List<IntCoordinates> get_occupied_coordinates() {
+            List<IntCoordinates> occupied = new List<IntCoordinates>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    occupied.Add(new IntCoordinates(bottom_left_corner.x + x, bottom_left_corner.y + y));
+                }
+            }
+            return occupied;
+        }
+
+        public bool is_contain_tile(IntCoordinates tile) {
+            if ((tile.x < bottom_left_corner.x) || (tile.x >= bottom_left_corner.x + width)) {
+                return false;
+            }
+            if ((tile.y < bottom_left_corner.y) || (tile.y >= bottom_left_corner.y + height)) {
+                return false;
+            }
+            return true;
+        }
+
+        private List<IntCoordinates> other_corners(){
+            return new List<IntCoordinates>() {
+                new IntCoordinates(bottom_left_corner.x + width, bottom_left_corner.y),
+                new IntCoordinates(bottom_left_corner.x + width, bottom_left_corner.y + height),
+                new IntCoordinates(bottom_left_corner.x, bottom_left_corner.y + height)
+            };
+        }
+
+        public double distance_to_tile(IntCoordinates tile) {
+            if (is_contain_tile(tile)) {
+                return .0;
+            }
+            if ((tile.x >= bottom_left_corner.x) && (tile.x < bottom_left_corner.x + width)) {
+                return Math.Min(Math.Abs(tile.y - bottom_left_corner.y), Math.Abs(tile.y - bottom_left_corner.y - height));
+            }
+            if ((tile.y >= bottom_left_corner.y) && (tile.y < bottom_left_corner.y + height)) {
+                return Math.Min(Math.Abs(tile.x - bottom_left_corner.x), Math.Abs(tile.y - bottom_left_corner.x - width));
+            }
+            var final_distance = bottom_left_corner.distance_to_other(tile);
+            foreach (var corner in other_corners()) {
+                var dist = corner.distance_to_other(tile);
+                if (dist > final_distance) {
+                    final_distance = dist;
+                }
+            }
+            return final_distance;
+        }
+
+        public Vector2Substitute get_offset_from_bottom_left_to_center() {
+            float offset_x = (1.0f * width) / 2;
+            float offset_y = (1.0f * height) / 2;
+            return new Vector2Substitute(offset_x, offset_y);
+        }
+    }
+
+    public static List<TileRectangle> find_n_free_tile_rectangles(int[, ] game_world, int rectangel_width, int rectangle_height, int nr_rectangles_to_find,
+                                                                List<IntCoordinates> blocked_squares = null,
+                                                                IntCoordinates player_coordinates = null, double min_distance_to_player = PRECISION_TOLERANCE, Int32? seed=null) {
+        var world_width = game_world.GetLength(0);
+        var world_height = game_world.GetLength(1);
+        var player_coordinates_list = new List<IntCoordinates> ();
+        if (player_coordinates == null) {
+            player_coordinates_list.Add(player_coordinates);
+        }
+        blocked_squares = (blocked_squares == null) ? new List<IntCoordinates>() : new List<IntCoordinates> (blocked_squares);
+
+        Func<IntCoordinates, bool> space_requirement = coord => {
+            var rectangle = new TileRectangle(coord, rectangel_width, rectangle_height);
+            for (int x = coord.x; x < coord.x + rectangel_width; x++) {
+                for (int y = coord.y; y < coord.y + rectangle_height; y++) {
+                    if ((x >= world_width) || (y >= world_height)) {
+                        return false;
+                    }
+                    if (game_world[x, y] != GameWorld.CELL_MARK_PASSABLE) {
+                        return false;
+                    }
+                }
+            }
+            foreach (var blocked in blocked_squares.Concat(player_coordinates_list).ToList()) {
+                if (rectangle.is_contain_tile(blocked)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        Func<IntCoordinates, bool> player_requirement = coord => {
+            var rectange = new TileRectangle(coord, rectangel_width, rectangle_height);
+            if (player_coordinates == null) {
+                return true;
+            }
+            var dist = rectange.distance_to_tile(player_coordinates);
+            return (dist >= min_distance_to_player);
+        };
+
+        var necessary_requirements = new List<PlacementRequirement>() {
+            new PlacementRequirement(space_requirement),
+            new PlacementRequirement(player_requirement),
+        };
+
+        var optional_requirements = new List<PlacementRequirement>() {
+        };
+
+        var rectangles = new List<TileRectangle>();
+        for (var index = 0; index < nr_rectangles_to_find; index++) {
+            var bottom_left = place_while_fulfilling_requirements(GameWorldUtils.get_passable_cells_as_list(game_world), optional_requirements, necessary_requirements, seed);
+            if (bottom_left != null) {
+                var rect = new TileRectangle(bottom_left, rectangel_width, rectangle_height);
+                rectangles.Add(rect);
+                blocked_squares.AddRange(rect.get_occupied_coordinates());
+            }
+        }
+        return rectangles;
     }
 }

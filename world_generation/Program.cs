@@ -9,6 +9,8 @@ namespace world_generation
     {
         static void Main(string[] args)
         {
+            test_rectangle_placement();
+            return;
             test_player_object_placement();
             return;
             test_reward_placement();
@@ -173,6 +175,60 @@ namespace world_generation
                 }
             }
             Console.WriteLine("Sucessfully placed interacting and non interacting objects!");
+        }
+
+        private static void test_rectangle_placement(Int32 seed = 21) {
+            var nr_retries = 100;
+            var rectangle_width = 3;
+            var rectangle_height = 2;
+            var nr_rectangles_to_find = 100;
+            var min_distance_to_player = 5;
+            int nr_to_display = 3;
+
+            for (int retry = 0; retry < nr_retries; retry++) {
+                var gw = new GameWorld();
+                gw.generate_world(seed);
+                var rewards = gw.rewards;
+                var player_coordinates = new IntCoordinates(10, 10);
+                var game_world = gw.stages.Last();
+                var rectangles = GameWorldUtils.find_n_free_tile_rectangles(game_world, rectangle_width, rectangle_height, nr_rectangles_to_find,
+                    blocked_squares: rewards, player_coordinates: player_coordinates, min_distance_to_player: min_distance_to_player);
+
+                if (retry < nr_to_display) {
+                    var rect_tiles = new List<IntCoordinates>();
+                    foreach (var rect in rectangles) {
+                        rect_tiles.AddRange(rect.get_occupied_coordinates());
+                    }
+                    GameWorld._print(game_world, rect_tiles);
+                }
+
+                for (int x = 0; x < gw.width; x++) {
+                    for (int y = 0; y < gw.height; y++) {
+                        if (game_world[x, y] == GameWorld.CELL_MARK_OCCUPIED) {
+                            foreach (var r in rectangles) {
+                                Assert.True((x < r.bottom_left_corner.x) || (x >= r.bottom_left_corner.x + r.width) || (y < r.bottom_left_corner.y) || (y >= r.bottom_left_corner.y + rectangle_height));
+                            }
+                        }
+                    }
+                }
+                foreach(var rectangle in rectangles) {
+                    foreach (var reward in rewards) {
+                        Assert.False(rectangle.is_contain_tile(reward));
+                    }
+                    Assert.True(rectangle.distance_to_tile(player_coordinates) >= min_distance_to_player);
+                }
+
+                for (int first_index = 0; first_index < rectangles.Count; first_index++) {
+                    var first_rect = rectangles[first_index];
+                    for (int second_index = first_index + 1; second_index < rectangles.Count; second_index++) {
+                        var second_rect = rectangles[second_index];
+                        foreach (var tile in first_rect.get_occupied_coordinates()) {
+                            Assert.False(second_rect.is_contain_tile(tile));
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Succesfully placed rectangels!");
         }
     }
 }
