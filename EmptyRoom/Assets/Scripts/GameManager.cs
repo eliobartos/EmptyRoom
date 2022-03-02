@@ -96,7 +96,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
         balls = gridManager.AddPlaceableObjects(ballsList);
 
         // Start scene transition
-        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 1.0f, 0.0f, 1.0f));
+        StartCoroutine(ChangeImageAlphaAnim(transitionImage, 1.0f, 0.0f, 3.0f));
 
         // Start Subtitles
         subtitleManager.DisplaySubtitle(ballsCollected, 1.5f);
@@ -298,6 +298,7 @@ public class GameManager : NonPersistentSingleton<GameManager>
     }
 
     void LevelWon() {
+        gameOver = true;
         playerMovement.canMove = false;
         AudioManager.instance.StopWithFadeout("Theme3", 8.0f);
         AudioManager.instance.StopAllWithFadeout(voiceOverList, 8.0f);
